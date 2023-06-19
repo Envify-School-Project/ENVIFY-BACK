@@ -1,4 +1,4 @@
-package com.enfivy.back.dao.impl;
+package com.envify.back.dao.impl;
 
 import com.envify.back.dao.UserDao;
 
