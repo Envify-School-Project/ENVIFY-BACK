@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.envify.back.entity.UserEntity;
 import com.envify.back.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.envify.back.entity.UserEntity;
 import com.envify.back.service.UserService;
