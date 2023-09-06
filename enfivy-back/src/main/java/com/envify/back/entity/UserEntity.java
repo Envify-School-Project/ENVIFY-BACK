@@ -1,6 +1,7 @@
 package com.envify.back.entity;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,11 +35,11 @@ public class UserEntity {
 	public String getUsername() { return username; }
 	public void setUsername(String username) { this.username = username; }
 
-	@Column(name = "last_name", nullable = true)
+	@Column(name = "last_name", nullable = false)
 	public String getLastName() { return last_name; }
 	public void setLastName(String last_name) { this.last_name = last_name; }
 
-	@Column(name = "first_name", nullable = true)
+	@Column(name = "first_name", nullable = false)
 	public String getFirstName() { return first_name; }
 	public void setFirstName(String first_name) { this.first_name = first_name; }
 
@@ -58,7 +59,7 @@ public class UserEntity {
 		this.password = password;
 	}
 
-	@Column(name = "company", nullable = false)
+	@Column(name = "company", nullable = true)
 	public String getCompany() {
 		return company;
 	}
