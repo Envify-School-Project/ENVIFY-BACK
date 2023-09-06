@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.Optional;
 
 /**
- * @author semfanou
+ * @author semfa
  * @author pierrebrivio
  *
  */
