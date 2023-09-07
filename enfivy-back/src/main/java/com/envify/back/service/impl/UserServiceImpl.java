@@ -1,6 +1,7 @@
 package com.envify.back.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -22,4 +23,16 @@ public class UserServiceImpl implements UserService{
 	public List<UserEntity> findAllUsers() {
 		return userDao.findAll();
 	}
+
+	@Override
+	public UserEntity getUserById(int id) { 
+		return userDao.getById(id); 
+	}
+
+	@Override
+	public void deleteUserById(int id) { 
+		userDao.deleteById(id); 
+	}
+
+
 }
