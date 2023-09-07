@@ -21,10 +21,10 @@ public class ConfigEntity {
         this.id = id;
     }
 
-    @Column(name = "user_id", nullable = false)
-    public int getUserId() {
-        return user_id;
-    }
+	@Column(name = "user_id", nullable = false)
+	public int getUserId() {
+		return user_id;
+	}
 
     public void setUserId(int user_id) {
         this.user_id = user_id;

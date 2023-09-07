@@ -22,6 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
 
+/**
+ * @author semfa
+ *
+ */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter{
 

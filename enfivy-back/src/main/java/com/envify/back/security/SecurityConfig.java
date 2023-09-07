@@ -66,6 +66,8 @@ public class SecurityConfig {
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//			.addFilterBefore(new ApiKeyAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+			
 
 		return http.build();
 	}
