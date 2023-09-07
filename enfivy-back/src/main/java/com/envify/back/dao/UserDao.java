@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.envify.back.entity.UserEntity;
 import java.util.Optional;
 
-import java.util.Optional;
-
 /**
  * @author semfa
  * @author pierrebrivio
