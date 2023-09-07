@@ -18,10 +18,10 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 	private String scriptFilePath;
 	
 	public String readFileAsString(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
-        byte[] bytes = Files.readAllBytes(path);
-        return new String(bytes);
-    }
+	        Path path = Paths.get(filePath);
+	        byte[] bytes = Files.readAllBytes(path);
+	        return new String(bytes);
+    	}
 	
 	
 	public String buildFilePath(String config) {
