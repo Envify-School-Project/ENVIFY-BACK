@@ -28,7 +28,6 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		StringBuilder filePath = new StringBuilder(scriptFilePath + config);
 		filePath.append("_script.sh");
 		return filePath.toString();
-//		return scriptFilePath + config + "_script.sh";
 	}
 	
 	public String buildFileFooterString() throws IOException {
