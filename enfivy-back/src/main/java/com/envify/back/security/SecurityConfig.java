@@ -8,14 +8,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.envify.back.service.impl.CustomUserDetailsService;
 
 /**
  * @author semfa
@@ -30,25 +36,42 @@ public class SecurityConfig {
 	
 	@Value("${conf.envify.host.front.url}")
 	private String frontUrl;
+	
+	private final CustomUserDetailsService userDetailsService;
+	private final JwtAuthFilter jwtAuthFilter;
 
+	public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthFilter jwtAuthFilter) {
+        this.userDetailsService = customUserDetailsService;
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+	
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    AuthenticationManager authenticationManager(HttpSecurity http)
+            throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService);
+        return authenticationManagerBuilder.build();
+    }
+	
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 			.formLogin().disable()
 			.logout().disable()
-			.authorizeRequests().antMatchers("/**")
-			.authenticated()
+			.antMatcher("/api/v1/**")
+			.authorizeRequests()
+			.anyRequest().authenticated()
 			.and()
 			.httpBasic().disable()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.addFilterBefore(new ApiKeyAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
 
 	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
+	CorsConfigurationSource corsConfigurationSource() {
 
 		final CorsConfiguration configuration = new CorsConfiguration();
 
@@ -67,7 +90,7 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public String[] allowedOrigins() {
+	String[] allowedOrigins() {
 		final List<String> allowedOrigins = new ArrayList<>();
 
 		allowedOrigins.add(url);
@@ -78,4 +101,9 @@ public class SecurityConfig {
 
 		return allowedOrigins.toArray(new String[0]);
 	}
+	
+	@Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

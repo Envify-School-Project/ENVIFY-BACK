@@ -13,5 +13,4 @@ public class EnfivyBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EnfivyBackApplication.class, args);
 	}
-
 }
