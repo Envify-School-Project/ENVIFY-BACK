@@ -18,15 +18,15 @@ public class UserEntity {
 
 	private int id;
 	private String username;
-  private String last_name;
-  private String first_name;
-  private String email;
-  private String company;
+ 	private String last_name;
+	private String first_name;
+	private String email;
+	private String company;
 	@JsonIgnore
 	private String password;
 	
 	@Id
-  @Column(name = "id", nullable = false)
+  	@Column(name = "id", nullable = false)
 	public int getId() {
 		return id;
 	}
