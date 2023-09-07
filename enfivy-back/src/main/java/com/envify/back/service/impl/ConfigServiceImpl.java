@@ -22,8 +22,12 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public ConfigEntity findConfigById(int id) { return configDao.getById(id); }
+    public ConfigEntity findConfigById(int id) { 
+        return configDao.getById(id); 
+    }
 
     @Override
-    public void deleteConfigById(int id) { configDao.deleteById(id); }
+    public void deleteConfigById(int id) { 
+        configDao.deleteById(id); 
+    }
 }
