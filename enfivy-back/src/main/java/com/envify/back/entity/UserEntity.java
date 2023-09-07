@@ -26,8 +26,9 @@ public class UserEntity {
 	private String password;
 	
 	@Id
-  	@Column(name = "id", nullable = false)
-	public int getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id", nullable = false)
+	public long getId() {
 		return id;
 	}
 	public void setId(int id) {

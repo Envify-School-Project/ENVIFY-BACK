@@ -21,7 +21,6 @@ public class AuthenticationService {
     public static Authentication getAuthentication(HttpServletRequest request) {
     	
     	//TODO get api key values from conf
-    	
         String apiKey = request.getHeader("ENVIFY-API-Key");
         if (apiKey == null || !apiKey.equals("R1rQpb6ZZQY2ViNIaC6X--")) {
             throw new BadCredentialsException("Invalid API Key");

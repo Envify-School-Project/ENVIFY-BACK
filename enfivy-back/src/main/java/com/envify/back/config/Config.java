@@ -8,6 +8,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
+	@Value("${envify.api.token.secret}")
+	private String tokenSecretKey;
+	
+	@Value("${envify.api.token.expiration.time}")
+	private String tokenExpirationTimeInMs;
+	
 	@Value("${script.file.path}")
 	private String scriptFilePath;
 	
@@ -20,27 +26,26 @@ public class Config {
 	public String getScriptFilePath() {
 		return scriptFilePath;
 	}
-	public void setScriptFilePath(String scriptFilePath) {
-		this.scriptFilePath = scriptFilePath;
-	}
 	
 	public String getApiKey() {
 		return apiKey;
-	}
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
 	}
 
 	public String getApiKeyValue() {
 		return apiKeyValue;
 	}
-	public void setApiKeyValue(String apiKeyValue) {
-		this.apiKeyValue = apiKeyValue;
+	
+	public String getTokenSecretKey() {
+		return tokenSecretKey;
+	}
+	
+	public String getTokenExpirationTimeInMs() {
+		return tokenExpirationTimeInMs;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(apiKey, apiKeyValue, scriptFilePath);
+		return Objects.hash(apiKey, apiKeyValue, scriptFilePath, tokenExpirationTimeInMs, tokenSecretKey);
 	}
 
 	@Override
@@ -53,6 +58,8 @@ public class Config {
 			return false;
 		Config other = (Config) obj;
 		return Objects.equals(apiKey, other.apiKey) && Objects.equals(apiKeyValue, other.apiKeyValue)
-				&& Objects.equals(scriptFilePath, other.scriptFilePath);
+				&& Objects.equals(scriptFilePath, other.scriptFilePath)
+				&& Objects.equals(tokenExpirationTimeInMs, other.tokenExpirationTimeInMs)
+				&& Objects.equals(tokenSecretKey, other.tokenSecretKey);
 	}
 }
