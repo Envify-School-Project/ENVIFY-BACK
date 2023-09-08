@@ -30,43 +30,35 @@ import com.envify.back.service.impl.CustomUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
+
 	@Value("${conf.envify.host.back.url}")
 	private String url;
-	
+
 	@Value("${conf.envify.host.front.url}")
 	private String frontUrl;
-	
+
 	private final CustomUserDetailsService userDetailsService;
 	private final JwtAuthFilter jwtAuthFilter;
 
 	public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthFilter jwtAuthFilter) {
-        this.userDetailsService = customUserDetailsService;
-        this.jwtAuthFilter = jwtAuthFilter;
-    }
-	
+		this.userDetailsService = customUserDetailsService;
+		this.jwtAuthFilter = jwtAuthFilter;
+	}
+
 	@Bean
-    AuthenticationManager authenticationManager(HttpSecurity http)
-            throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService);
-        return authenticationManagerBuilder.build();
-    }
-	
+	AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+		AuthenticationManagerBuilder authenticationManagerBuilder = http
+				.getSharedObject(AuthenticationManagerBuilder.class);
+		authenticationManagerBuilder.userDetailsService(userDetailsService);
+		return authenticationManagerBuilder.build();
+	}
+
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-			.formLogin().disable()
-			.logout().disable()
-			.antMatcher("/api/v1/**")
-			.authorizeRequests()
-			.anyRequest().authenticated()
-			.and()
-			.httpBasic().disable()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-			
+		http.csrf().disable().formLogin().disable().logout().disable().antMatcher("/api/v1/**").authorizeRequests()
+				.anyRequest().authenticated().and().httpBasic().disable().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -80,9 +72,8 @@ public class SecurityConfig {
 		configuration.setAllowedHeaders(Arrays.asList("*"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE"));
 		configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Methods",
-				"Access-Control-Allow-Headers",
-				"Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method",
-				"Last-Modified", "ETag"));
+				"Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers",
+				"Access-Control-Request-Method", "Last-Modified", "ETag"));
 
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
@@ -102,9 +93,9 @@ public class SecurityConfig {
 
 		return allowedOrigins.toArray(new String[0]);
 	}
-	
+
 	@Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }
