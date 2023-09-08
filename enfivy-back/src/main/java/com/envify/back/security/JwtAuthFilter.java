@@ -27,44 +27,45 @@ import io.jsonwebtoken.Claims;
  *
  */
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter{
+public class JwtAuthFilter extends OncePerRequestFilter {
 
 	private final JWTUtil jwtUtil;
-    private final ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
-    public JwtAuthFilter(JWTUtil jwtUtil, ObjectMapper mapper) {
-        this.jwtUtil = jwtUtil;
-        this.mapper = mapper;
-    }
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Map<String, Object> errorDetails = new HashMap<>();
+	public JwtAuthFilter(JWTUtil jwtUtil, ObjectMapper mapper) {
+		this.jwtUtil = jwtUtil;
+		this.mapper = mapper;
+	}
 
-        try {
-            String accessToken = jwtUtil.resolveToken(request);
-            if (accessToken == null ) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-            Claims claims = jwtUtil.getAllClaimsFromToken(accessToken);
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		Map<String, Object> errorDetails = new HashMap<>();
 
-            if(claims != null && jwtUtil.validateToken(accessToken)){
-                String email = claims.getSubject();
-                Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(email,"",new ArrayList<>());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+		try {
+			String accessToken = jwtUtil.resolveToken(request);
+			if (accessToken == null) {
+				filterChain.doFilter(request, response);
+				return;
+			}
+			Claims claims = jwtUtil.getAllClaimsFromToken(accessToken);
 
-        }catch (Exception e){
-            errorDetails.put("message", "Authentication Error");
-            errorDetails.put("details",e.getMessage());
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+			if (claims != null && jwtUtil.validateToken(accessToken)) {
+				String email = claims.getSubject();
+				Authentication authentication = new UsernamePasswordAuthenticationToken(email, "", new ArrayList<>());
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
 
-            mapper.writeValue(response.getWriter(), errorDetails);
+		} catch (Exception e) {
+			errorDetails.put("message", "Authentication Error");
+			errorDetails.put("details", e.getMessage());
+			response.setStatus(HttpStatus.FORBIDDEN.value());
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        }
-        filterChain.doFilter(request, response);
-    }
+			mapper.writeValue(response.getWriter(), errorDetails);
+
+		}
+		filterChain.doFilter(request, response);
+	}
 
 }

@@ -34,104 +34,103 @@ public class JWTUtil {
 
 	private static final String TOKEN_HEADER = "Authorization";
 	private static final String TOKEN_PREFIX = "Bearer ";
-	
+
 	@Autowired
-	private Config config ;
+	private Config config;
 	private Key key;
 
 	@PostConstruct
 	public void init() {
 		this.key = Keys.hmacShaKeyFor(config.getTokenSecretKey().getBytes());
 	}
-	
+
 	public Claims getAllClaimsFromToken(String token) {
 		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 	}
-	
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
 
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
+	public String extractUsername(String token) {
+		return extractClaim(token, Claims::getSubject);
+	}
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-    }
+	public Date extractExpiration(String token) {
+		return extractClaim(token, Claims::getExpiration);
+	}
 
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
+	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+		final Claims claims = extractAllClaims(token);
+		return claimsResolver.apply(claims);
+	}
 
-    public String resolveToken(HttpServletRequest request) {
+	private Claims extractAllClaims(String token) {
+		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+	}
 
-        String bearerToken = request.getHeader(TOKEN_HEADER);
-        if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
-            return bearerToken.substring(TOKEN_PREFIX.length());
-        }
-        return null;
-    }
-    
-    public String generateToken(User user, String expirationDate) {
-    	List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", authorities);
-        return createToken(claims, user.getUsername(), expirationDate);
-    }
-    
-    public String generateToken(UserEntity user, String expirationDate) {
-    	List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        
-    	Map<String, Object> claims = new HashMap<>();
-    	claims.put("role", authorities);
-    	return createToken(claims, user.getEmail(), expirationDate);
-    }
+	private Boolean isTokenExpired(String token) {
+		return extractExpiration(token).before(new Date());
+	}
 
-    private String createToken(Map<String, Object> claims, String email, String expirationTime) {
-    	final Long expirationTimeInMs = getExpirationTime(expirationTime);
-    	
-    	final Date createdDate = new Date();
-    	final Date expirationDate = new Date(createdDate.getTime() + expirationTimeInMs);
-    	
-    	
-        return Jwts.builder().setClaims(claims).setSubject(email).setIssuedAt(createdDate)
-                .setExpiration(expirationTimeInMs == 0 ? null : expirationDate)
-                .signWith(key).compact();
-    }
-    
-    public Long getExpirationTime(String expirationTime) {
-    	Long expirationTimeInMs = Long.parseLong(config.getTokenExpirationTimeInMs());
-    	if(StringUtils.isNoneBlank(expirationTime)) {
-    		expirationTimeInMs = defineExpirationTime(expirationTime);
-    	}
-    	return expirationTimeInMs;
-    }
+	public String resolveToken(HttpServletRequest request) {
 
-	private Long defineExpirationTime(String expirationTime) {
-		Long expirationTimeInMs;
-		if("-1".equals(expirationTime)) {
-			expirationTimeInMs = 0L;
-		} else {
-			expirationTimeInMs = (long)(Double.parseDouble(expirationTime) * 60 * 60 * 1000);
+		String bearerToken = request.getHeader(TOKEN_HEADER);
+		if (bearerToken != null && bearerToken.startsWith(TOKEN_PREFIX)) {
+			return bearerToken.substring(TOKEN_PREFIX.length());
+		}
+		return null;
+	}
+
+	public String generateToken(User user, String expirationDate) {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("role", authorities);
+		return createToken(claims, user.getUsername(), expirationDate);
+	}
+
+	public String generateToken(UserEntity user, String expirationDate) {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("role", authorities);
+		return createToken(claims, user.getEmail(), expirationDate);
+	}
+
+	private String createToken(Map<String, Object> claims, String email, String expirationTime) {
+		final Long expirationTimeInMs = getExpirationTime(expirationTime);
+
+		final Date createdDate = new Date();
+		final Date expirationDate = new Date(createdDate.getTime() + expirationTimeInMs);
+
+		return Jwts.builder().setClaims(claims).setSubject(email).setIssuedAt(createdDate)
+				.setExpiration(expirationTimeInMs == 0 ? null : expirationDate).signWith(key).compact();
+	}
+
+	public Long getExpirationTime(String expirationTime) {
+		Long expirationTimeInMs = Long.parseLong(config.getTokenExpirationTimeInMs());
+		if (StringUtils.isNoneBlank(expirationTime)) {
+			expirationTimeInMs = defineExpirationTime(expirationTime);
 		}
 		return expirationTimeInMs;
 	}
 
-    public Boolean validateToken(String token, UserEntity userEntity) {
-        final String username = extractUsername(token);
-        return (username.equals(userEntity.getEmail()) && !isTokenExpired(token));
-    }
-    
-    public Boolean validateToken(String token) {
-    	return !isTokenExpired(token);
-    }
-	
+	private Long defineExpirationTime(String expirationTime) {
+		Long expirationTimeInMs;
+		if ("-1".equals(expirationTime)) {
+			expirationTimeInMs = 0L;
+		} else {
+			expirationTimeInMs = (long) (Double.parseDouble(expirationTime) * 60 * 60 * 1000);
+		}
+		return expirationTimeInMs;
+	}
+
+	public Boolean validateToken(String token, UserEntity userEntity) {
+		final String username = extractUsername(token);
+		return (username.equals(userEntity.getEmail()) && !isTokenExpired(token));
+	}
+
+	public Boolean validateToken(String token) {
+		return !isTokenExpired(token);
+	}
+
 }
