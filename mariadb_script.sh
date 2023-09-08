@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# Afficher un message à l'utilisateur
+# Beginning of the script
 package="MariaDb"
 
 echo "Welcome to the installation script of $package ! \n"
 echo "----------This script is valid on the Linux distribution Ubuntu 22.04-----------"
 
-# lancer un update des packages
 echo "-----------------Update of repositories-----------------"
 sudo apt update -y
 
@@ -35,6 +34,6 @@ echo "Enter current password for root (enter for none): Press enter as there is 
 #Reload privilege tables now? [Y/n]: Enter Y
 sudo mysql_secure_installation
 
-# Fin du script
+# End of script
 echo "End of script."
 echo "Installation succeed."
