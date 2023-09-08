@@ -36,7 +36,7 @@ public class SecurityConfig {
 
 	@Value("${conf.envify.host.front.url}")
 	private String frontUrl;
-	
+
 	private final CustomUserDetailsService userDetailsService;
 	private final JwtAuthFilter jwtAuthFilter;
 
