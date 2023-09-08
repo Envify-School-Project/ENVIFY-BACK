@@ -17,13 +17,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UserEntity {
 
 	private int id;
-	private String username, last_name, first_name, email, company;
+	private String username;
+ 	private String last_name;
+	private String first_name;
+	private String email;
+	private String company;
 	@JsonIgnore
 	private String password;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", nullable = false)
+  	@Column(name = "id", nullable = false)
 	public int getId() {
 		return id;
 	}
