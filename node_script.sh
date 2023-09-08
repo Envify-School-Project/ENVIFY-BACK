@@ -26,6 +26,6 @@ sudo node -v
 echo " \n To uninstall nodejs you can type the following commands \n"
 echo "  \n"
 
-# Fin du script
-echo "Fin du script."
-echo "Installation réussir."
+# End of script
+echo "End of script."
+echo "Installation succeed."
