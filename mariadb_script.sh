@@ -3,24 +3,24 @@
 # Afficher un message à l'utilisateur
 package="MariaDb"
 
-echo "Bienvenue dans le script d'intall de $package ! \n"
-echo "----------Ce script est valable sur la distribution linux Ubuntu 22.04-----------"
+echo "Welcome to the installation script of $package ! \n"
+echo "----------This script is valid on the Linux distribution Ubuntu 22.04-----------"
 
 # lancer un update des packages
-echo "-----------------Mise à jour des repository-----------------"
+echo "-----------------Update of repositories-----------------"
 sudo apt update -y
 
 echo "-----------------Add mariadb repository to download it-----------------"
 curl -LsS https://r.mariadb.com/downloads/mariadb_repo_setup | sudo bash
 
-echo "-----------------Installation de mariadb-----------------"
+echo "-----------------Installation of mariadb-----------------"
 sudo apt-get install mariadb-server mariadb-client -y
 
-echo "-----------------Verification du status de mariadb-----------------"
+echo "-----------------Checking the status of mariadb-----------------"
 sudo systemctl status mariadb | grep mariadb
 
-echo "-----------------Securisation de mysql-----------------"
-echo "Repondez au prompt avec les réponses ci-dessous pour sécuris votre base de données \n"
+echo "-----------------Securing mysql-----------------"
+echo "Reply to the prompt with the answers below to secure your database \n"
 echo "Enter current password for root (enter for none): Press enter as there is no password by default. \n
       Set root password? [Y/n]: Select Y and enter a new password. \n
       Remove anonymous users? [Y/n]: Select Y \n
@@ -36,5 +36,5 @@ echo "Enter current password for root (enter for none): Press enter as there is 
 sudo mysql_secure_installation
 
 # Fin du script
-echo "Fin du script."
-echo "Installation réussir."
+echo "End of script."
+echo "Installation succeed."

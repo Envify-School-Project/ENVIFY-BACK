@@ -5,16 +5,16 @@ package="NodeJs"
 version="setup"+$1
 # TODO variabilisé la versionde nodeJS avec un argument($) pour le script
 
-echo "Bienvenue dans le script d'intall de $package ! \n"
-echo "----------Ce script install NodeJs en utilisant le NodeSource PPA (personal package archive)-----------"
+echo "Welcome to the installation script of $package ! \n"
+echo "----------This script installs NodeJs using the NodeSource PPA (personal package archive)-----------"
 
 # lancer un update des packages
-echo "-----------------Mise à jour des repository-----------------"
+echo "-----------------Update of repositories-----------------"
 sudo apt update -y
 
 # Telechargement du script d'installation
-echo "-----------------Telechargement du script d'installation----------------- \n"
-echo "Le chemin vers le script est /tmp/nodesource_setup.sh \n"
+echo "-----------------Download installation script----------------- \n"
+echo "The path to the script is /tmp/nodesource_setup.sh \n"
 curl -sL https://deb.nodesource.com/$version -o /tmp/nodesource_setup.sh
 
 # Add NodeSource PPA to local package of ubuntu
@@ -22,15 +22,15 @@ echo "-----------------Add NodeSource PPA to local package of ubuntu------------
 sudo bash /tmp/nodesource_setup.sh
 
 # Install nodeJS
-echo "-----------------Installation de nodeJS-----------------"
+echo "-----------------Installation of nodeJS-----------------"
 sudo apt install nodejs
 
 # Verify nodeJS version
-echo "-----------------Vérification de la version de nodejs installé-----------------"
+echo "-----------------Checking the installed nodejs version-----------------"
 sudo node -v
 
 # Script for uninstall nodejs
-echo " \n Pour desinstaller nodejs vous pouvez taper les commandes suivantes \n"
+echo " \n To uninstall nodejs you can type the following commands \n"
 echo "  \n"
 
 # Fin du script

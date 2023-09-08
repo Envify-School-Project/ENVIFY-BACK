@@ -1,3 +1,3 @@
 # Fin du script
-echo "Fin du script."
-echo "Installation réussir."
+echo "End of script."
+echo "Installation succeed."
