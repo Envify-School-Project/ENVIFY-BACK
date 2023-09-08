@@ -49,8 +49,8 @@ public class UserEntity {
 		return lastname;
 	}
 
-	public void setLastName(String last_name) {
-		this.lastname = last_name;
+	public void setLastName(String lastname) {
+		this.lastname = lastname;
 	}
 
 	@Column(name = "first_name", nullable = true)
@@ -58,8 +58,8 @@ public class UserEntity {
 		return firstname;
 	}
 
-	public void setFirstName(String first_name) {
-		this.firstname = first_name;
+	public void setFirstName(String firstname) {
+		this.firstname = firstname;
 	}
 
 	@Column(name = "email", nullable = false)
