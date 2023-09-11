@@ -87,3 +87,7 @@ create table config_packages (
     FOREIGN KEY (config_id) references configs(id) ON DELETE cascade ON UPDATE cascade,
     FOREIGN KEY (package_version_id) references package_versions(id) ON DELETE cascade ON UPDATE cascade
 );
+
+INSERT INTO envify_database.users
+(username, last_name, first_name, email, password, company, created_at, updated_at)
+VALUES(NULL, NULL, NULL, "envifyadmin@gmail.com", "$2a$10$DpE7LZBYkD2.zWZYxPI/lODnv8sxS7PZsAsP3GtB5TeFhycuFYMEu", NULL, current_timestamp(), current_timestamp());
