@@ -85,6 +85,11 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.11.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -119,6 +124,16 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>deploy/**</exclude>
+					<exclude>config/**</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 	</build>
 	<repositories>
 		<repository>
