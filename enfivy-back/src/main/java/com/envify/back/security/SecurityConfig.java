@@ -58,7 +58,8 @@ public class SecurityConfig {
 		http.csrf().disable().formLogin().disable().logout().disable().antMatcher("/api/v1/**").authorizeRequests()
 				.anyRequest().authenticated().and().httpBasic().disable().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(new ApiKeyAuthenticationFilter(), JwtAuthFilter.class);
 
 		return http.build();
 	}
