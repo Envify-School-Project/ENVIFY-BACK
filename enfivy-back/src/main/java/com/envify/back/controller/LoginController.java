@@ -1,5 +1,6 @@
 package com.envify.back.controller;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.envify.back.dao.UserDao;
 import com.envify.back.dto.AuthRequest;
 import com.envify.back.dto.AuthResponse;
+import com.envify.back.dto.UserDto;
 import com.envify.back.entity.UserEntity;
 import com.envify.back.security.JWTUtil;
+import com.envify.back.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
@@ -40,6 +43,9 @@ public class LoginController {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private UserService userService;
 
 	public LoginController(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		this.authenticationManager = authenticationManager;
@@ -83,5 +89,26 @@ public class LoginController {
 			LOGGER.info("Authout {}", authentication.getName());
 			authentication.setAuthenticated(false);
 		}
+	}
+	
+	@PostMapping("/create")
+	public ResponseEntity<String> createUser(Principal principal, @RequestBody UserDto user) {
+		final UserEntity userEntity = new UserEntity();
+		userEntity.setEmail(user.getEmail());
+
+		if (userService.isUserExist(userEntity)) {
+			return ResponseEntity.badRequest().body("L'utilisateur existe deja dans la bdd");
+		}
+
+		userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+
+		try {
+			userService.saveUser(userEntity);
+		} catch (Exception e) {
+			LOGGER.error("Bad request exception");
+			return ResponseEntity.badRequest().body("Bad request exeption");
+		}
+
+		return ResponseEntity.ok().body("Utilisateur crée avec succès");
 	}
 }
