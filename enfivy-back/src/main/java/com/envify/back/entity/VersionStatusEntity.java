@@ -4,10 +4,10 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "packages")
-public class PackageEntity {
+@Table(name = "version_status")
+public class VersionStatusEntity {
     private int id;
-    private String name;
+    private String label;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,25 +20,25 @@ public class PackageEntity {
         this.id = id;
     }
 
-    @Column(name = "name", nullable = false)
-    public String getName() {
-        return name;
+    @Column(name = "label", nullable = false)
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PackageEntity that = (PackageEntity) o;
-        return id == that.id && Objects.equals(name, that.name);
+        VersionStatusEntity that = (VersionStatusEntity) o;
+        return id == that.id && Objects.equals(label, that.label);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, label);
     }
 }
