@@ -3,6 +3,7 @@ package com.envify.back.controller;
 import com.envify.back.dto.PackageVersionDto;
 import com.envify.back.entity.PackageVersionEntity;
 import com.envify.back.service.PackageVersionService;
+import com.envify.back.service.mapper.PackageVersionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.util.List;
 public class PackageVersionController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PackageVersionController.class);
+
+//    @Autowired
+//    private PackageVersionMapper packageVersionMapper;
 
     @Autowired
     private PackageVersionService packageVersionService;
@@ -54,8 +58,9 @@ public class PackageVersionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PackageVersionEntity> updatePackage(@PathVariable("packageId") int packageId, @PathVariable int id, @RequestBody PackageVersionDto packageVersionDto) {
-        PackageVersionEntity packageVersionUpdated = new PackageVersionEntity();
-        mapPackageVersionDtoToPackageVersionEntity(packageVersionDto, packageVersionUpdated, id, packageId);
+        PackageVersionEntity packageVersionUpdated = PackageVersionMapper.MAPPER.packageVersionDtoToPackageVersion(packageVersionDto);
+        packageVersionUpdated.setId(id);
+        packageVersionUpdated.setPackageId(packageId);
         PackageVersionEntity packageVersionEntity = packageVersionService.updatePackageVersion(packageVersionUpdated);
 
         return ResponseEntity.ok().body(packageVersionEntity);
@@ -64,13 +69,5 @@ public class PackageVersionController {
     @DeleteMapping("/{id}")
     public void deletePackageById(@PathVariable int id) {
         packageVersionService.deletePackageVersionById(id);
-    }
-
-    private void mapPackageVersionDtoToPackageVersionEntity(PackageVersionDto packageVersionDto, PackageVersionEntity packageVersionEntity, int packageVersionId, int packageId) {
-        packageVersionEntity.setId(packageVersionId);
-        packageVersionEntity.setVersionNumber(packageVersionDto.getVersionNumber());
-        packageVersionEntity.setUrl(packageVersionDto.getUrl());
-        packageVersionEntity.setVersionStatusId(packageVersionDto.getVersionStatusId());
-        packageVersionEntity.setPackageId(packageId);
     }
 }
