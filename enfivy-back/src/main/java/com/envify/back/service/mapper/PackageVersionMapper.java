@@ -15,14 +15,4 @@ public interface PackageVersionMapper {
     PackageVersionMapper MAPPER = Mappers.getMapper(PackageVersionMapper.class);
 
     PackageVersionEntity packageVersionDtoToPackageVersion(PackageVersionDto packageVersionDto);
-
-//    @Override
-//    public PackageVersionEntity packageVersionDtoToPackageVersion(PackageVersionDto packageVersionDto) {
-//        PackageVersionEntity packageVersionEntity = new PackageVersionEntity();
-//        packageVersionEntity.setVersionNumber(packageVersionDto.getVersionNumber());
-//        packageVersionEntity.setUrl(packageVersionDto.getUrl());
-//        packageVersionEntity.setVersionStatusId(packageVersionDto.getVersionStatusId());
-//
-//        return packageVersionEntity;
-//    }
 }

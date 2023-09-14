@@ -18,9 +18,6 @@ public class PackageVersionController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PackageVersionController.class);
 
-//    @Autowired
-//    private PackageVersionMapper packageVersionMapper;
-
     @Autowired
     private PackageVersionService packageVersionService;
 
