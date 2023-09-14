@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/packages")
+@RequestMapping("/api/v1/config-packages")
 public class ConfigPackageController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigPackageController.class);
