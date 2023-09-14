@@ -1,8 +1,8 @@
-package com.envify.back.config;
+package com.envify.back.dto;
 
 import java.util.Objects;
 
-public class ScriptRequestBody {
+public class ScriptRequestBodyDto {
 	
 	private String config;
 	private String release;
@@ -32,7 +32,7 @@ public class ScriptRequestBody {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ScriptRequestBody other = (ScriptRequestBody) obj;
+		ScriptRequestBodyDto other = (ScriptRequestBodyDto) obj;
 		return Objects.equals(config, other.config) && Objects.equals(release, other.release);
 	}
 }
