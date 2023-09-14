@@ -42,7 +42,7 @@ public class ScriptGeneratorController {
 	private ScriptGeneratorService scriptGeneratorService;
 	
 	@PostMapping("/fileContent")
-	public StringBuilder getScriptFileString(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws IOException {
+	public StringBuilder buildScriptFileString(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws IOException {
 		
 		StringBuilder scriptCode = new StringBuilder();
 		
@@ -65,7 +65,7 @@ public class ScriptGeneratorController {
 	}	
 	
 	@PostMapping("/script/lines")
-	public List<ScriptDto> getScriptLines(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws EnvifyException {
+	public List<ScriptDto> buildScriptLines(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws EnvifyException {
 		final List<ScriptDto> scripts = new ArrayList<>();
 		final List<String> scriptLabels = new ArrayList<>();
 		final List<String> scriptCommand = new ArrayList<>();
@@ -84,8 +84,8 @@ public class ScriptGeneratorController {
 		return scripts;
 	}	
 	
-	@GetMapping(value = "/file/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public @ResponseBody ResponseEntity<byte[]> getFile(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws IOException {
+	@PostMapping(value = "/file/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody ResponseEntity<byte[]> downloadFile(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws IOException {
 		Path file = Paths.get(config.getScriptFilePath() + scriptRequestBody.getConfig());
         byte[] scriptFileInBytes = Files.readAllBytes(file);
         
