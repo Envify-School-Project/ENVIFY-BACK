@@ -17,8 +17,12 @@ public class VersionStatusServiceImpl implements VersionStatusService {
     private VersionStatusDao versionStatusDao;
 
     @Override
-    public List<VersionStatusEntity> findAllVersionsStatuses() { return versionStatusDao.findAll(); }
+    public List<VersionStatusEntity> findAllVersionsStatuses() {
+        return versionStatusDao.findAll();
+    }
 
     @Override
-    public void saveVersionStatus(VersionStatusEntity versionStatus) { versionStatusDao.save(versionStatus); }
+    public void saveVersionStatus(VersionStatusEntity versionStatus) {
+        versionStatusDao.save(versionStatus);
+    }
 }
