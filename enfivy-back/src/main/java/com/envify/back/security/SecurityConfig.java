@@ -16,10 +16,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.envify.back.service.impl.CustomUserDetailsService;
 
@@ -55,11 +57,22 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable().formLogin().disable().logout().disable().antMatcher("/api/v1/**").authorizeRequests()
-				.anyRequest().authenticated().and().httpBasic().disable().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+		CorsFilter corsFilter = new CorsFilter(corsConfigurationSource());
+		
+		http
+			.csrf().disable()
+			.formLogin().disable()
+			.logout().disable()
+			.httpBasic().disable()
+			.antMatcher("/api/v1/**").authorizeRequests()
+			.anyRequest().authenticated()
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			.addFilterBefore(corsFilter, ChannelProcessingFilter.class)
+			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterAfter(new ApiKeyAuthenticationFilter(), JwtAuthFilter.class);
+		
 		return http.build();
 	}
 
@@ -74,6 +87,8 @@ public class SecurityConfig {
 		configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Methods",
 				"Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers",
 				"Access-Control-Request-Method", "Last-Modified", "ETag"));
+		
+		
 
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
