@@ -70,16 +70,15 @@ public class ScriptGeneratorController {
 		final List<String> scriptLabels = new ArrayList<>();
 		final List<String> scriptCommand = new ArrayList<>();
 		
-		// get script path
 		String filePath = scriptGeneratorService.buildFilePath(scriptRequestBody.getConfig());
 		
 		scriptGeneratorService.getScriptCommandAndLabelFromFile(scriptLabels, scriptCommand, filePath);
 		
-		if(scriptCommand.size() == scriptLabels.size()) {
-			scriptGeneratorService.fillScriptsLinesList(scripts, scriptLabels, scriptCommand);
-		} else {
+		if(scriptCommand.size() != scriptLabels.size()) {
 			throw new EnvifyException("Script Templating error might be considering");
 		}
+		
+		scriptGeneratorService.fillScriptsLinesList(scripts, scriptLabels, scriptCommand);
 		
 		return scripts;
 	}	
