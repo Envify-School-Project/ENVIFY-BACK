@@ -9,7 +9,5 @@ import java.util.List;
 public interface FavoriteConfigService {
     List<FavoriteConfigEntity> findAllFavoriteConfigs();
     void saveFavoriteConfig(FavoriteConfigEntity favoriteConfigEntity);
-    FavoriteConfigEntity findFavoriteConfigById(int id);
-    FavoriteConfigEntity updateFavoriteConfig(FavoriteConfigEntity favoriteConfigEntity);
     void deleteFavoriteConfigById(int id);
 }

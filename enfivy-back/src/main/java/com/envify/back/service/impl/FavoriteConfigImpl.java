@@ -26,17 +26,7 @@ public class FavoriteConfigImpl implements FavoriteConfigService {
     }
 
     @Override
-    public FavoriteConfigEntity findFavoriteConfigById(int config_id) {
-        return favoriteConfigDao.getByConfigId(config_id);
-    }
-
-    @Override
-    public FavoriteConfigEntity updateFavoriteConfig(FavoriteConfigEntity favoriteConfigEntity) {
-        return favoriteConfigDao.save(favoriteConfigEntity);
-    }
-
-    @Override
-    public void deleteFavoriteConfigById(int config_id) {
-        favoriteConfigDao.deleteByConfigId(config_id);
+    public void deleteFavoriteConfigById(int id) {
+        favoriteConfigDao.deleteByConfigId(id);
     }
 }

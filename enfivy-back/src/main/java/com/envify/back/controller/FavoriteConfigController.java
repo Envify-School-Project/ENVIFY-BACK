@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/favorite-config")
+@RequestMapping("/api/v1/favoriteConfig")
 public class FavoriteConfigController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FavoriteConfigController.class);
@@ -21,14 +21,14 @@ public class FavoriteConfigController {
     private FavoriteConfigService favoriteConfigService;
 
     @GetMapping()
-    public ResponseEntity<List<FavoriteConfigEntity>> findAllConfigPackages() {
+    public ResponseEntity<List<FavoriteConfigEntity>> findAllFavoriteConfigs() {
         List<FavoriteConfigEntity> favoriteConfigs = favoriteConfigService.findAllFavoriteConfigs();
 
         return ResponseEntity.ok().body(favoriteConfigs);
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createConfigPackage(@RequestBody FavoriteConfigDto favoriteConfigDto) {
+    public ResponseEntity<String> createFavoriteConfig(@RequestBody FavoriteConfigDto favoriteConfigDto) {
         final FavoriteConfigEntity favoriteConfigCreated = new FavoriteConfigEntity();
         favoriteConfigCreated.setUserId(favoriteConfigDto.getUserId());
 
@@ -42,29 +42,8 @@ public class FavoriteConfigController {
         return ResponseEntity.ok().body("Package succesfully created.");
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FavoriteConfigEntity> findFavoriteConfigById(@PathVariable int id) {
-        FavoriteConfigEntity favoriteConfigEntity = favoriteConfigService.findFavoriteConfigById(id);
-
-        return ResponseEntity.ok().body(favoriteConfigEntity);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<FavoriteConfigEntity> updateConfigPackage(@PathVariable int id, @RequestBody FavoriteConfigDto favoriteConfigDto) {
-        FavoriteConfigEntity favoriteConfigUpdated = new FavoriteConfigEntity();
-        mapConfigPackageDtoToConfigPackageEntity(favoriteConfigDto, favoriteConfigUpdated, id);
-        FavoriteConfigEntity packageEntity = favoriteConfigService.updateFavoriteConfig(favoriteConfigUpdated);
-
-        return ResponseEntity.ok().body(packageEntity);
-    }
-
     @DeleteMapping("/{id}")
-    public void deleteConfigPackageById(@PathVariable int id) {
+    public void deleteFavoriteConfigById(@PathVariable int id) {
         favoriteConfigService.deleteFavoriteConfigById(id);
-    }
-
-    private void mapConfigPackageDtoToConfigPackageEntity(FavoriteConfigDto favoriteConfigDto, FavoriteConfigEntity favoriteConfigEntity, int id) {
-        favoriteConfigEntity.setConfigId(id);
-        favoriteConfigEntity.setUserId(favoriteConfigDto.getUserId());
     }
 }

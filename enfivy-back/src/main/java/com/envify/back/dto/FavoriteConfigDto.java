@@ -3,28 +3,28 @@ package com.envify.back.dto;
 import java.util.Objects;
 
 public class FavoriteConfigDto {
-    private int config_id;
-    private int user_id;
+    private int configId;
+    private int userId;
 
     public int getFavoriteConfigId() {
-        return config_id;
+        return configId;
     }
 
-    public void setFavoriteConfigId(int config_id) {
-        this.config_id = config_id;
+    public void setFavoriteConfigId(int configId) {
+        this.configId = configId;
     }
 
     public int getUserId() {
-        return user_id;
+        return userId;
     }
 
-    public void setUserId(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(config_id, user_id);
+        return Objects.hash(configId, userId);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class FavoriteConfigDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FavoriteConfigDto that = (FavoriteConfigDto) o;
-        return config_id == that.config_id && Objects.equals(user_id, that.user_id);
+        return configId == that.configId && Objects.equals(userId, that.userId);
     }
 }
