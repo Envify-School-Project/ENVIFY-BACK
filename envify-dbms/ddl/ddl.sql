@@ -32,6 +32,25 @@ BEGIN
 END//
 DELIMITER ;
 
+
+drop table if exists operating_systems;
+create table operating_systems (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+drop table if exists operating_system_versions;
+create table operating_system_versions (
+  id INT NOT NULL AUTO_INCREMENT,
+  version_number VARCHAR(255) NOT NULL,
+  operating_system_id INT NOT NULL,
+  created_at TIMESTAMP default CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP default CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (operating_system_id) references operating_systems(id) ON DELETE cascade ON UPDATE cascade
+);
+
 drop table if exists configs;
 create table configs (
     id INT NOT NULL AUTO_INCREMENT,
@@ -42,7 +61,7 @@ create table configs (
     created_at TIMESTAMP default CURRENT_TIMESTAMP,
     updated_at TIMESTAMP default CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) references users(id) ON DELETE cascade ON UPDATE cascade
+    FOREIGN KEY (user_id) references users(id) ON DELETE cascade ON UPDATE cascade,
     FOREIGN KEY (operating_system_id) references operating_systems(id) ON DELETE cascade ON UPDATE cascade
 );
 
@@ -93,7 +112,7 @@ drop table if exists config_packages;
 create table config_packages (
     config_id INT NOT NULL,
     package_version_id INT NOT NULL,
-    configuration_scripts JSON,
+    configuration_scripts LONGTEXT,
     created_at TIMESTAMP default CURRENT_TIMESTAMP,
     updated_at TIMESTAMP default CURRENT_TIMESTAMP,
     PRIMARY KEY (config_id, package_version_id),
@@ -101,33 +120,16 @@ create table config_packages (
     FOREIGN KEY (package_version_id) references package_versions(id) ON DELETE cascade ON UPDATE cascade
 );
 
-drop table if exists operating_systems;
-create table operating_systems (
-  id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id)
-);
 
-drop table if exists operating_system_versions;
-create table operating_system_versions (
-  id INT NOT NULL AUTO_INCREMENT,
-  version_number VARCHAR(255) NOT NULL,
-  operating_system_id INT NOT NULL,
-  created_at TIMESTAMP default CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP default CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  FOREIGN KEY (operating_system_id) references operating_systems(id) ON DELETE cascade ON UPDATE cascade
-);
-
-drop table package_config_files;
+drop table if exists package_config_files;
 create table package_config_files (
   id INT NOT NULL AUTO_INCREMENT,
   description VARCHAR(255),
-  properties JSON,
-  package_id INT NOT NULL,
+  properties LONGTEXT,
+  package_version_id INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (package_id) references packages(id) ON DELETE cascade ON UPDATE cascade
-)
+  FOREIGN KEY (package_version_id) references package_versions(id) ON DELETE cascade ON UPDATE cascade
+);
 
 
 INSERT INTO envify_database.users

@@ -22,8 +22,18 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
+    public void saveConfig(ConfigEntity configEntity) {
+        configDao.save(configEntity);
+    }
+
+    @Override
     public ConfigEntity findConfigById(int id) { 
         return configDao.getById(id); 
+    }
+
+    @Override
+    public ConfigEntity updateConfig(ConfigEntity configEntity) {
+        return configDao.save(configEntity);
     }
 
     @Override
