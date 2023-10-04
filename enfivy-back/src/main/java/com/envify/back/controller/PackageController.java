@@ -37,7 +37,7 @@ public class PackageController {
             packageService.savePackage(packageCreated);
         } catch (Exception e) {
             LOGGER.error(e.toString());
-            return ResponseEntity.badRequest().body("Bad request exeption");
+            return ResponseEntity.badRequest().body("Bad request exception");
         }
 
         return ResponseEntity.ok().body("Package succesfully created.");

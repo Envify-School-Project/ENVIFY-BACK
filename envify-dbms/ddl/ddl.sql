@@ -8,7 +8,7 @@ create table users (
     email VARCHAR(255),
     password VARCHAR(255),
     company VARCHAR(255),
-    user_type VARCHAR(255) default 'user',
+    role VARCHAR(255) default 'user',
     created_at TIMESTAMP default CURRENT_TIMESTAMP,
     updated_at TIMESTAMP default CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
@@ -20,6 +20,15 @@ BEFORE INSERT ON users
 FOR EACH ROW
 BEGIN
     SET NEW.email = LOWER(NEW.email);
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER format_role_trigger
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+    SET NEW.role = LOWER(NEW.role);
 END//
 DELIMITER ;
 
