@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,10 +49,10 @@ public class ScriptGeneratorController {
 		String fileHeaderContent = scriptGeneratorService.buildFileHeaderString(scriptRequestBody);
 		
 		// get script footer
-		String fileFooterContent = scriptGeneratorService.buildFileFooterString();
+		String fileFooterContent = scriptGeneratorService.buildFileFooterString(scriptRequestBody);
 		
 		// get script content
-		String filePath = scriptGeneratorService.buildFilePath(scriptRequestBody.getConfig());
+		String filePath = scriptGeneratorService.buildFilePath(scriptRequestBody.getConfig(), scriptRequestBody.getOs().toLowerCase());
 		String fileContent = scriptGeneratorService.readFileAsString(filePath);
 		
 		// concat string
@@ -65,20 +64,24 @@ public class ScriptGeneratorController {
 	}	
 	
 	@PostMapping("/script/lines")
-	public List<ScriptDto> buildScriptLines(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws EnvifyException {
+	public List<ScriptDto> buildScriptLines(@RequestBody List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException {
 		final List<ScriptDto> scripts = new ArrayList<>();
 		final List<String> scriptLabels = new ArrayList<>();
 		final List<String> scriptCommand = new ArrayList<>();
 		
-		String filePath = scriptGeneratorService.buildFilePath(scriptRequestBody.getConfig());
 		
-		scriptGeneratorService.getScriptCommandAndLabelFromFile(scriptLabels, scriptCommand, filePath);
-		
-		if(scriptCommand.size() != scriptLabels.size()) {
-			throw new EnvifyException("Script Templating error might be considering");
+		for (ScriptRequestBodyDto packageChoose : scriptRequestBody) {
+			String filePath = scriptGeneratorService.buildFilePath(packageChoose.getConfig().toLowerCase(), packageChoose.getOs().toLowerCase());
+			
+			scriptGeneratorService.getScriptCommandAndLabelFromFile(scriptLabels, scriptCommand, filePath, packageChoose.getRelease().toLowerCase());
+			
+			if(scriptCommand.size() != scriptLabels.size()) {
+				throw new EnvifyException("Script Templating error might be considering");
+			}
+			
+			scriptGeneratorService.fillScriptsLinesList(scripts, scriptLabels, scriptCommand);
 		}
 		
-		scriptGeneratorService.fillScriptsLinesList(scripts, scriptLabels, scriptCommand);
 		
 		return scripts;
 	}	

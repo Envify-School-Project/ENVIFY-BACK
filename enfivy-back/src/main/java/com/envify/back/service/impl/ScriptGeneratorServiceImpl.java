@@ -19,6 +19,12 @@ import com.envify.back.service.ScriptGeneratorService;
 @Service
 public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 
+	private static final String SCRIPT_SH = "_script.sh";
+	private static final String FOOTER = "footer";
+	private static final String PACKAGE = "$package";
+	private static final String ECHO = "echo";
+	private static final String VERSION = "$version";
+	
 	@Value("${script.file.path}")
 	private String scriptFilePath;
 	
@@ -29,38 +35,46 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
     	}
 	
 	
-	public String buildFilePath(String config) {
-		StringBuilder filePath = new StringBuilder(scriptFilePath + config);
-		filePath.append("_script.sh");
+	public String buildFilePath(String config, String os) {
+		StringBuilder filePath = new StringBuilder(scriptFilePath);
+		filePath.append(os);
+		filePath.append("_");
+		filePath.append(config);
+		filePath.append(SCRIPT_SH);
 		return filePath.toString();
 	}
 	
-	public String buildFileFooterString() throws IOException {
-		String fileFooterPath = buildFilePath("footer");
+	public String buildFileFooterString(ScriptRequestBodyDto scriptRequestBody) throws IOException {
+		String fileFooterPath = buildFilePath(FOOTER, scriptRequestBody.getOs());
+		
 		return readFileAsString(fileFooterPath);
 	}
 
 	public String buildFileHeaderString(ScriptRequestBodyDto scriptRequestBody) throws IOException {
-		String fileHeaderPath = buildFilePath("header");
+		String fileHeaderPath = buildFilePath("header", scriptRequestBody.getOs());
 		String fileHeaderContent = readFileAsString(fileHeaderPath);
 		
-		fileHeaderContent = fileHeaderContent.replace("$package", scriptRequestBody.getConfig());
-		fileHeaderContent = fileHeaderContent.replace("$version", scriptRequestBody.getRelease());
+		fileHeaderContent = fileHeaderContent.replace(PACKAGE, scriptRequestBody.getConfig());
+		fileHeaderContent = fileHeaderContent.replace(VERSION, scriptRequestBody.getRelease());
 		return fileHeaderContent;
 	}
 	
 	public void getScriptCommandAndLabelFromFile(final List<String> scriptLabels, final List<String> scriptCommand,
-			String filePath) {
+			String filePath, String release) {
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
 			String line = reader.readLine();
 			while (line != null) {
-				if(line.contains("echo")) {
+				if(line.contains(ECHO)) {
 					String label = line.substring(5);
 					scriptLabels.add(label.substring(1, label.length() - 1).replace("-", ""));
 				}
 				
-				if(!line.isBlank() && !line.contains("echo")) {
+				if(line.contains(VERSION)) {
+					line = line.replace(VERSION, release);
+				}
+				
+				if(!line.isBlank() && !line.contains(ECHO)) {
 					scriptCommand.add(line);
 				}
 				
