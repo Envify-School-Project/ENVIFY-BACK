@@ -1,10 +1,10 @@
 package com.envify.back.service;
 
-import com.envify.back.entity.PackageEntity;
-import com.envify.back.entity.PackageVersionEntity;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.envify.back.entity.PackageVersionEntity;
 
 @Service
 public interface PackageVersionService {

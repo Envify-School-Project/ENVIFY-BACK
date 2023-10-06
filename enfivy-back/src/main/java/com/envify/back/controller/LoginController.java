@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.envify.back.dao.UserDao;
 import com.envify.back.dto.AuthRequest;
 import com.envify.back.dto.AuthResponse;
+import com.envify.back.dto.RequestResponse;
 import com.envify.back.dto.UserDto;
 import com.envify.back.entity.UserEntity;
 import com.envify.back.security.JWTUtil;
@@ -72,6 +74,10 @@ public class LoginController {
 			final AuthResponse authResponse = new AuthResponse();
 			authResponse.setToken(token);
 			authResponse.setEmail(authentication.getName());
+			authResponse.setUserId(user.get(0).getId());
+			
+			//TODO set profil in auth response for authentication
+//			authResponse.setProfil(user.get(0).getProfile);
 
 			return ResponseEntity.ok(authResponse);
 		} catch (BadCredentialsException e) {
@@ -94,12 +100,12 @@ public class LoginController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<String> createUser(Principal principal, @RequestBody UserDto user) {
+	public @ResponseBody ResponseEntity<RequestResponse> createUser(Principal principal, @RequestBody UserDto user) {
 		final UserEntity userEntity = new UserEntity();
 		userEntity.setEmail(user.getEmail());
 
 		if (userService.isUserExist(userEntity)) {
-			return ResponseEntity.badRequest().body("L'utilisateur existe deja dans la bdd");
+			return ResponseEntity.badRequest().body(new RequestResponse("L'utilisateur existe deja dans la bdd", 400));
 		}
 
 		userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -108,9 +114,9 @@ public class LoginController {
 			userService.saveUser(userEntity);
 		} catch (Exception e) {
 			LOGGER.error("Bad request exception");
-			return ResponseEntity.badRequest().body("Bad request exeption");
+			return ResponseEntity.badRequest().body(new RequestResponse("Bad request exeption", 400));
 		}
 
-		return ResponseEntity.ok().body("Utilisateur crée avec succès");
+		return ResponseEntity.ok().body(new RequestResponse("Utilisateur crée avec succès", 200));
 	}
 }

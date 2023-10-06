@@ -6,6 +6,7 @@ public class ScriptRequestBodyDto {
 	
 	private String config;
 	private String release;
+	private String os;
 	
 	public String getConfig() {
 		return config;
@@ -20,9 +21,16 @@ public class ScriptRequestBodyDto {
 		this.release = release;
 	}
 	
+	public String getOs() {
+		return os;
+	}
+	public void setOs(String os) {
+		this.os = os;
+	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(config, release);
+		return Objects.hash(config, os, release);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -33,6 +41,7 @@ public class ScriptRequestBodyDto {
 		if (getClass() != obj.getClass())
 			return false;
 		ScriptRequestBodyDto other = (ScriptRequestBodyDto) obj;
-		return Objects.equals(config, other.config) && Objects.equals(release, other.release);
+		return Objects.equals(config, other.config) && Objects.equals(os, other.os)
+				&& Objects.equals(release, other.release);
 	}
 }
