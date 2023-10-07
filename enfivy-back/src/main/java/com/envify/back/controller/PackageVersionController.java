@@ -64,7 +64,7 @@ public class PackageVersionController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePackageById(@PathVariable int id) {
+    public void deletePackageVersionById(@PathVariable int id) {
         packageVersionService.deletePackageVersionById(id);
     }
 }

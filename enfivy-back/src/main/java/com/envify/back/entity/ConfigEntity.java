@@ -10,6 +10,7 @@ public class ConfigEntity {
 	private int userId;
 	private String name; 
 	private String description;
+	private int operatingSystemId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,19 +50,25 @@ public class ConfigEntity {
 		this.description = description;
 	}
 
+	@Column(name = "operating_system_id", nullable = false)
+	public int getOperatingSystemId() {
+		return operatingSystemId;
+	}
+
+	public void setOperatingSystemId(int operatingSystemId) {
+		this.operatingSystemId = operatingSystemId;
+	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 		ConfigEntity that = (ConfigEntity) o;
-		return id == that.id && userId == that.userId && Objects.equals(name, that.name)
-				&& Objects.equals(description, that.description);
+		return id == that.id && userId == that.userId && operatingSystemId == that.operatingSystemId && Objects.equals(name, that.name) && Objects.equals(description, that.description);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, userId, name, description);
+		return Objects.hash(id, userId, name, description, operatingSystemId);
 	}
 }

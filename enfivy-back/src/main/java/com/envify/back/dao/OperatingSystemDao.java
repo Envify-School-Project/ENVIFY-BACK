@@ -1,11 +1,11 @@
 package com.envify.back.dao;
 
-import com.envify.back.entity.ConfigEntity;
+import com.envify.back.entity.OperatingSystemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ConfigDao extends JpaRepository<ConfigEntity, Long> {
-    ConfigEntity getById(int id);
+public interface OperatingSystemDao extends JpaRepository<OperatingSystemEntity, Long> {
+    OperatingSystemEntity getById(int id);
     void deleteById(int id);
 }

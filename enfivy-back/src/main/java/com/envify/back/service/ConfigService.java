@@ -8,6 +8,8 @@ import java.util.List;
 @Service
 public interface ConfigService {
     List<ConfigEntity> findAllConfigs();
+    void saveConfig(ConfigEntity configEntity);
     ConfigEntity findConfigById(int id);
+    ConfigEntity updateConfig(ConfigEntity configEntity);
     void deleteConfigById(int id);
 }
