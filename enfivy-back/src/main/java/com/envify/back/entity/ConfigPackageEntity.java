@@ -6,27 +6,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "config_packages")
 public class ConfigPackageEntity {
-    private int configId;
-    private int packageVersionId;
+
     private String configurationScripts;
-
-    @Column(name = "config_id")
-    public int getConfigId() {
-        return configId;
-    }
-
-    public void setConfigId(int configId) {
-        this.configId = configId;
-    }
-
-    @Column(name = "package_version_id")
-    public int getPackageVersionId() {
-        return packageVersionId;
-    }
-
-    public void setPackageVersionId(int packageVersionId) {
-        this.packageVersionId = packageVersionId;
-    }
+    
+    @EmbeddedId
+    private ConfigPackageIdEntity configPackageId;
 
     @Column(name = "configuration_scripts")
     public String getConfigurationScripts() {
@@ -38,15 +22,20 @@ public class ConfigPackageEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ConfigPackageEntity that = (ConfigPackageEntity) o;
-        return configId == that.configId && packageVersionId == that.packageVersionId && Objects.equals(configurationScripts, that.configurationScripts);
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ConfigPackageEntity other = (ConfigPackageEntity) obj;
+		return Objects.equals(configPackageId, other.configPackageId)
+				&& Objects.equals(configurationScripts, other.configurationScripts);
+	}
 
     @Override
-    public int hashCode() {
-        return Objects.hash(configId, packageVersionId, configurationScripts);
-    }
+	public int hashCode() {
+		return Objects.hash(configPackageId, configurationScripts);
+	}
 }

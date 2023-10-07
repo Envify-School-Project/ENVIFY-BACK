@@ -4,9 +4,14 @@ import com.envify.back.dao.OperatingSystemVersionDao;
 import com.envify.back.entity.OperatingSystemVersionEntity;
 import com.envify.back.service.OperatingSystemVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class OperatingSystemVersionSystemImpl implements OperatingSystemVersionService {
 
     @Autowired
