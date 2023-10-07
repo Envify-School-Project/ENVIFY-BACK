@@ -4,9 +4,14 @@ import com.envify.back.dao.OperatingSystemDao;
 import com.envify.back.entity.OperatingSystemEntity;
 import com.envify.back.service.OperatingSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class OperatingSystemServiceImpl implements OperatingSystemService {
     @Autowired
     private OperatingSystemDao operatingSystemDao;

@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "operating_system_versions")
 public class OperatingSystemVersionEntity {
     private int id;
-    private String version_number;
+    private String versionNumber;
     private int operatingSystemId;
 
     @Id
@@ -20,14 +20,14 @@ public class OperatingSystemVersionEntity {
     public void setId(int id) {
         this.id = id;
     }
-
+    
     @Column(name = "version_number", nullable = false)
-    public String getVersion_number() {
-        return version_number;
-    }
+	public String getVersionNumber() {
+		return versionNumber;
+	}
 
-    public void setVersionNumber(String version_number) {
-        this.version_number = version_number;
+    public void setVersionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
     }
 
     @Column(name = "operating_system_id")
@@ -39,16 +39,24 @@ public class OperatingSystemVersionEntity {
         this.operatingSystemId = operatingSystemId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OperatingSystemVersionEntity that = (OperatingSystemVersionEntity) o;
-        return id == that.id && operatingSystemId == that.operatingSystemId && Objects.equals(version_number, that.version_number);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, operatingSystemId, versionNumber);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, version_number, operatingSystemId);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OperatingSystemVersionEntity other = (OperatingSystemVersionEntity) obj;
+		return id == other.id && operatingSystemId == other.operatingSystemId
+				&& Objects.equals(versionNumber, other.versionNumber);
+	}
+
+    
+    
 }
