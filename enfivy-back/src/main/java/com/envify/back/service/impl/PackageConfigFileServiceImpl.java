@@ -20,8 +20,7 @@ public class PackageConfigFileServiceImpl implements PackageConfigFileService{
 
 	@Override
 	public List<PackageConfigFileEntity> findByPackageVersionId(int packageVersionId) {
-		packageConfigFileDao.getByPackageVersionId(packageVersionId);
 		
-		return null;
+		return packageConfigFileDao.getByPackageVersionId(packageVersionId);
 	}
 }
