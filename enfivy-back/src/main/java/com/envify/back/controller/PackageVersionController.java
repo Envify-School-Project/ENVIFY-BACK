@@ -6,7 +6,6 @@ import com.envify.back.entity.PackageVersionEntity;
 import com.envify.back.service.ConfigPackageFileService;
 import com.envify.back.service.PackageVersionService;
 import com.envify.back.service.mapper.PackageVersionMapper;
-import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
