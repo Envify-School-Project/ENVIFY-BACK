@@ -1,0 +1,45 @@
+[mysqld]
+# The TCP port number to listen for incoming connections.
+port=$port
+
+# The path to the database directory.
+#datadir=/var/lib/mysql
+datadir=$datadir
+
+# The maximum number of concurrent connections.
+#max_connections=100
+max_connections=$max_connections
+
+# The default storage engine for new tables.
+#default_storage_engine=InnoDB
+default_storage_engine=$defaultStorageEngine
+
+# The default character set for new tables.
+default_character_set=utf8mb4
+
+# The default collation for new tables.
+default_collation_name=utf8mb4_general_ci
+
+# Enable the slow query log.
+slow_query_log=1
+
+# The maximum size of the slow query log file.
+slow_query_log_file=/var/log/mysql/slow.log
+slow_query_log_file_size=10240000
+
+# Enable the general query log.
+general_log=0
+
+# The maximum size of the general query log file.
+general_log_file=/var/log/mysql/general.log
+general_log_file_size=10240000
+
+# The maximum size of the binary log file.
+max_binlog_size=100M
+
+# The number of binary log files to keep.
+expire_logs_days=10
+
+# The bind address for MySQL.
+#bind-address=0.0.0.0
+bind-address=$bindAdress

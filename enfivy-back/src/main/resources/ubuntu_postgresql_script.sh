@@ -1,6 +1,3 @@
-package="postgres"
-version=15
-
 echo "-----------------Add postgresql repo to apt list source-----------------"
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
