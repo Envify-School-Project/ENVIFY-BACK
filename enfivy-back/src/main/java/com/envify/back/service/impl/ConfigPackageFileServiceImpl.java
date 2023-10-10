@@ -24,11 +24,6 @@ public class ConfigPackageFileServiceImpl implements ConfigPackageFileService {
     }
 
     @Override
-    public ConfigPackageFileEntity findConfigPackageFileById(int id) {
-        return configPackageFileDao.getById(id);
-    }
-
-    @Override
     public ConfigPackageFileEntity findConfigPackageFileByPackageVersionId(int packageVersionId) {
         return configPackageFileDao.getByPackageVersionId(packageVersionId);
     }
@@ -45,6 +40,6 @@ public class ConfigPackageFileServiceImpl implements ConfigPackageFileService {
 
     @Override
     public void deleteConfigPackageFile(int id) {
-
+        configPackageFileDao.deleteById(id);
     }
 }

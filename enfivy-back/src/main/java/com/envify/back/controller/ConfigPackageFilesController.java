@@ -51,7 +51,7 @@ public class ConfigPackageFilesController {
     @PutMapping("/{id}")
     public ResponseEntity<ConfigPackageFileEntity> updateConfig(@PathVariable int id, @RequestBody ConfigPackageFileDto configPackageFileDto) {
         ConfigPackageFileEntity configPackageFileUpdated = new ConfigPackageFileEntity();
-        mapDtotoEntity(configPackageFileDto, configPackageFileUpdated, id);
+        mapDtoToEntity(configPackageFileDto, configPackageFileUpdated, id);
         ConfigPackageFileEntity configPackageFileEntity = configPackageFileService.updateConfigPackageFile(configPackageFileUpdated);
 
         return ResponseEntity.ok().body(configPackageFileEntity);
@@ -62,7 +62,7 @@ public class ConfigPackageFilesController {
         configPackageFileService.deleteConfigPackageFile(id);
     }
 
-    private void mapDtotoEntity(ConfigPackageFileDto configPackageFileDto, ConfigPackageFileEntity configPackageFileEntity, int configPackageFileId) {
+    private void mapDtoToEntity(ConfigPackageFileDto configPackageFileDto, ConfigPackageFileEntity configPackageFileEntity, int configPackageFileId) {
         configPackageFileEntity.setId(configPackageFileId);
         configPackageFileEntity.setDescription(configPackageFileDto.getDescription());
         configPackageFileEntity.setProperties(gson.toJson(configPackageFileDto.getProperties()));

@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 public interface ConfigPackageFileService {
     List<ConfigPackageFileEntity> findAllConfigPackageFiles();
-    ConfigPackageFileEntity findConfigPackageFileById(int id);
     ConfigPackageFileEntity findConfigPackageFileByPackageVersionId(int packageVersionId);
     void saveConfigPackageFile(ConfigPackageFileEntity configPackageFileCreated);
     ConfigPackageFileEntity updateConfigPackageFile(ConfigPackageFileEntity configPackageFileEntity);
