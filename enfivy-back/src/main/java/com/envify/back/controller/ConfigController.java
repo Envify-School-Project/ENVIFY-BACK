@@ -58,7 +58,7 @@ public class ConfigController {
         mapConfigDtoToPackageEntity(configDto, configUpdated, id);
         ConfigEntity configEntity = configService.updateConfig(configUpdated);
 
-        return ResponseEntity.ok().body(configUpdated);
+        return ResponseEntity.ok().body(configEntity);
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,9 @@
 package com.envify.back.controller;
 
 import com.envify.back.dto.PackageVersionDto;
+import com.envify.back.entity.ConfigPackageFileEntity;
 import com.envify.back.entity.PackageVersionEntity;
+import com.envify.back.service.ConfigPackageFileService;
 import com.envify.back.service.PackageVersionService;
 import com.envify.back.service.mapper.PackageVersionMapper;
 import org.slf4j.Logger;
@@ -20,6 +22,8 @@ public class PackageVersionController {
 
     @Autowired
     private PackageVersionService packageVersionService;
+    @Autowired
+    private ConfigPackageFileService configPackageFileService;
 
     @GetMapping()
     public ResponseEntity<List<PackageVersionEntity>> findAllPackageVersions(@PathVariable("packageId") int packageId) {
@@ -51,6 +55,13 @@ public class PackageVersionController {
         PackageVersionEntity packageVersionEntity = packageVersionService.findPackageVersionById(id);
 
         return ResponseEntity.ok().body(packageVersionEntity);
+    }
+
+    @GetMapping("/{id}/config_files")
+    public ResponseEntity<ConfigPackageFileEntity> findPackageConfigFiles(@PathVariable int id) {
+        ConfigPackageFileEntity configPackageFileEntity = configPackageFileService.findConfigPackageFileByPackageVersionId(id);
+
+        return ResponseEntity.ok().body(configPackageFileEntity);
     }
 
     @PutMapping("/{id}")
