@@ -36,7 +36,7 @@ public class ConfigPackageFilesController {
         final ConfigPackageFileEntity configPackageFileCreated = new ConfigPackageFileEntity();
         configPackageFileCreated.setDescription(configPackageFileDto.getDescription());
         configPackageFileCreated.setProperties(gson.toJson(configPackageFileDto.getProperties()));
-        configPackageFileCreated.setPackageVersionId(configPackageFileCreated.getPackageVersionId());
+        configPackageFileCreated.setPackageVersionId(configPackageFileDto.getPackageVersionId());
 
         try {
             configPackageFileService.saveConfigPackageFile(configPackageFileCreated);
