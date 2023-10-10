@@ -16,6 +16,9 @@ public class PackageConfigFileEntity {
 	private int packageVersionId;
 	private String scriptColumn;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
 	public int getId() {
 		return id;
 	}
