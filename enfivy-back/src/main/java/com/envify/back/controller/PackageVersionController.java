@@ -59,7 +59,7 @@ public class PackageVersionController {
 
     @GetMapping("/{id}/config_files")
     public ResponseEntity<ConfigPackageFileEntity> findPackageConfigFiles(@PathVariable int id) {
-        ConfigPackageFileEntity configPackageFileEntity = configPackageFileService.findConfigPakageFileByPakageVersionId(id);
+        ConfigPackageFileEntity configPackageFileEntity = configPackageFileService.findConfigPackageFileByPackageVersionId(id);
 
         return ResponseEntity.ok().body(configPackageFileEntity);
     }

@@ -11,7 +11,7 @@ import java.util.List;
 public interface ConfigPackageFileService {
     List<ConfigPackageFileEntity> findAllConfigPackageFiles();
     ConfigPackageFileEntity findConfigPackageFileById(int id);
-    ConfigPackageFileEntity findConfigPakageFileByPakageVersionId(int packageVersionId);
+    ConfigPackageFileEntity findConfigPackageFileByPackageVersionId(int packageVersionId);
     void saveConfigPackageFile(ConfigPackageFileEntity configPackageFileCreated);
     ConfigPackageFileEntity updateConfigPackageFile(ConfigPackageFileEntity configPackageFileEntity);
     void deleteConfigPackageFile(int id);

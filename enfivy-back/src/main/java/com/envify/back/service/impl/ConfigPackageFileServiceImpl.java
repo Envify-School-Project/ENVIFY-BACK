@@ -29,7 +29,7 @@ public class ConfigPackageFileServiceImpl implements ConfigPackageFileService {
     }
 
     @Override
-    public ConfigPackageFileEntity findConfigPakageFileByPakageVersionId(int packageVersionId) {
+    public ConfigPackageFileEntity findConfigPackageFileByPackageVersionId(int packageVersionId) {
         return configPackageFileDao.getByPackageVersionId(packageVersionId);
     }
 

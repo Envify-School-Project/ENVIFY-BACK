@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/config_packages_files")
+@RequestMapping("/api/v1/config_package_files")
 public class ConfigPackageFilesController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigPackageFilesController.class);
 
