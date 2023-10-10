@@ -1,11 +1,14 @@
 package com.envify.back.dto;
 
+import org.h2.util.json.JSONArray;
+
+import java.lang.reflect.Array;
 import java.util.Objects;
 
 public class ConfigPackageFileDto {
     private int id;
     private String description;
-    private String properties;
+    private Array properties;
     private int packageVersionId;
 
     public int getId() {
@@ -24,11 +27,11 @@ public class ConfigPackageFileDto {
         this.description = description;
     }
 
-    public String getProperties() {
+    public Array getProperties() {
         return properties;
     }
 
-    public void setProperties(String properties) {
+    public void setProperties(Array properties) {
         this.properties = properties;
     }
 

@@ -6,6 +6,7 @@ import com.envify.back.dto.ConfigPackageFileDto;
 import com.envify.back.entity.ConfigEntity;
 import com.envify.back.entity.ConfigPackageFileEntity;
 import com.envify.back.service.ConfigPackageFileService;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/config_package_files")
 public class ConfigPackageFilesController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigPackageFilesController.class);
+    Gson gson = new Gson();
 
     @Autowired
     private ConfigPackageFileService configPackageFileService;
@@ -33,7 +35,7 @@ public class ConfigPackageFilesController {
     public ResponseEntity<String> createConfigPackageFile(@RequestBody ConfigPackageFileDto configPackageFileDto) {
         final ConfigPackageFileEntity configPackageFileCreated = new ConfigPackageFileEntity();
         configPackageFileCreated.setDescription(configPackageFileDto.getDescription());
-        configPackageFileCreated.setProperties(configPackageFileDto.getProperties());
+        configPackageFileCreated.setProperties(gson.toJson(configPackageFileDto.getProperties()));
         configPackageFileCreated.setPackageVersionId(configPackageFileCreated.getPackageVersionId());
 
         try {
@@ -63,7 +65,7 @@ public class ConfigPackageFilesController {
     private void mapDtotoEntity(ConfigPackageFileDto configPackageFileDto, ConfigPackageFileEntity configPackageFileEntity, int configPackageFileId) {
         configPackageFileEntity.setId(configPackageFileId);
         configPackageFileEntity.setDescription(configPackageFileDto.getDescription());
-        configPackageFileEntity.setProperties(configPackageFileEntity.getProperties());
+        configPackageFileEntity.setProperties(gson.toJson(configPackageFileDto.getProperties()));
         configPackageFileEntity.setPackageVersionId(configPackageFileDto.getPackageVersionId());
     }
 }
