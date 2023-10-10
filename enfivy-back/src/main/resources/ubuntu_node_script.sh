@@ -1,11 +1,8 @@
-package="NodeJs"
-version="setup"+$1
-
 echo "-----------------Update of repositories-----------------"
 sudo apt update -y
 
 echo "-----------------Download installation script-----------------"
-curl -sL https://deb.nodesource.com/$version -o /tmp/nodesource_setup.sh
+curl -sL https://deb.nodesource.com/setup$version -o /tmp/nodesource_setup.sh
 
 echo "-----------------Add NodeSource PPA to local package of ubuntu-----------------"
 sudo bash /tmp/nodesource_setup.sh
