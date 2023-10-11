@@ -2,6 +2,8 @@ package com.envify.back.controller;
 
 import java.util.List;
 
+import com.envify.back.entity.PackageVersionEntity;
+import com.envify.back.service.PackageVersionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,21 @@ public class PackageController {
 
     @Autowired
     private PackageService packageService;
+    @Autowired
+    private PackageVersionService packageVersionService;
 
     @GetMapping()
     public ResponseEntity<List<PackageEntity>> findAllPackages() {
         List<PackageEntity> packages = packageService.findAllPackages();
+        List<PackageVersionEntity> packageVersions = packageVersionService.findAllPackageVersions();
+        List<PackageEntity> packagesWithVersions = packages.stream().map(currentPackage -> {
+            currentPackage.setPackageVersions(packageVersions.stream().filter(packageVersion ->
+                    packageVersion.getPackageId() == currentPackage.getId()).toList());
 
-        return ResponseEntity.ok().body(packages);
+            return currentPackage;
+        }).toList();
+
+        return ResponseEntity.ok().body(packagesWithVersions);
     }
 
     @PostMapping("/")

@@ -8,7 +8,8 @@ import com.envify.back.entity.PackageVersionEntity;
 
 @Service
 public interface PackageVersionService {
-    List<PackageVersionEntity> findAllPackageVersions(int packageId);
+    List<PackageVersionEntity> findAllPackageVersions();
+    List<PackageVersionEntity> findAllPackageVersionsById(int packageId);
     void savePackageVersion(PackageVersionEntity packageVersionEntity);
     PackageVersionEntity findPackageVersionById(int id);
     PackageVersionEntity updatePackageVersion(PackageVersionEntity packageVersionEntity);

@@ -27,7 +27,7 @@ public class PackageVersionController {
 
     @GetMapping()
     public ResponseEntity<List<PackageVersionEntity>> findAllPackageVersions(@PathVariable("packageId") int packageId) {
-        List<PackageVersionEntity> packageVersions = packageVersionService.findAllPackageVersions(packageId);
+        List<PackageVersionEntity> packageVersions = packageVersionService.findAllPackageVersionsById(packageId);
 
         return ResponseEntity.ok().body(packageVersions);
     }
