@@ -1,6 +1,7 @@
 package com.envify.back.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -8,6 +9,7 @@ import java.util.Objects;
 public class PackageEntity {
     private int id;
     private String name;
+    private List<PackageVersionEntity> versions;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,16 +31,25 @@ public class PackageEntity {
         this.name = name;
     }
 
+    @OneToMany(mappedBy = "packageId", cascade = CascadeType.ALL)
+    public List<PackageVersionEntity> getPackageVersions() {
+        return versions;
+    }
+
+    public void setPackageVersions(List<PackageVersionEntity> versions) {
+        this.versions = versions;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PackageEntity that = (PackageEntity) o;
-        return id == that.id && Objects.equals(name, that.name);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(versions, that.versions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, versions);
     }
 }

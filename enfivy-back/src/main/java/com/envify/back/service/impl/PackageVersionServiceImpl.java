@@ -16,7 +16,11 @@ public class PackageVersionServiceImpl implements PackageVersionService {
     @Autowired
     private PackageVersionDao packageVersionDao;
     @Override
-    public List<PackageVersionEntity> findAllPackageVersions(int packageId) {
+    public List<PackageVersionEntity> findAllPackageVersions() {
+        return packageVersionDao.findAll();
+    }
+    @Override
+    public List<PackageVersionEntity> findAllPackageVersionsById(int packageId) {
         return packageVersionDao.findPackageVersionEntitiesByPackageId(packageId);
     }
 
