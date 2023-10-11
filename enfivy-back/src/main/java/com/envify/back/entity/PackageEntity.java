@@ -31,6 +31,11 @@ public class PackageEntity {
         this.name = name;
     }
 
+    @OneToMany(mappedBy = "packageId", cascade = CascadeType.ALL)
+    public List<PackageVersionEntity> getPackageVersions() {
+        return versions;
+    }
+
     public void setPackageVersions(List<PackageVersionEntity> versions) {
         this.versions = versions;
     }
