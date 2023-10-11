@@ -12,6 +12,6 @@ public interface ScriptGeneratorService {
 	String buildFilePath(String config, String os) throws IOException;
 	String buildFileFooterString(ScriptRequestBodyDto scriptRequestBody) throws IOException;
 	String buildFileHeaderString(ScriptRequestBodyDto scriptRequestBody) throws IOException;
-	void getScriptCommandAndLabelFromFile(final List<String> scriptLabels, final List<String> scriptCommand, String filePath, String release);
+	void getScriptCommandAndLabelFromFile(final List<String> scriptLabels, final List<String> scriptCommand, String filePath, String release) throws IOException;
 	void fillScriptsLinesList(final List<ScriptDto> scripts, final List<String> scriptLabels,final List<String> scriptCommand);
 }

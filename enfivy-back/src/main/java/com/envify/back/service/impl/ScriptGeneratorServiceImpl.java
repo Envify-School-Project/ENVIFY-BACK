@@ -3,6 +3,9 @@ package com.envify.back.service.impl;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,9 +13,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import com.envify.back.dto.ScriptDto;
 import com.envify.back.dto.ScriptRequestBodyDto;
@@ -31,9 +36,15 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 	private ResourceLoader resourceLoader;
 
 	public String readFileAsString(String filePath) throws IOException {
-		Path path = Paths.get(filePath);
-		byte[] bytes = Files.readAllBytes(path);
-		return new String(bytes);
+		
+		Resource resource = new ClassPathResource("classpath:" + filePath);
+		InputStream inputStream = resource.getInputStream(); 
+		byte[] bdata = FileCopyUtils.copyToByteArray(inputStream);
+		
+//		Path path = Paths.get(filePath);
+//		byte[] bytes = Files.readAllBytes(path);
+//		return new String(bytes);
+		return new String(bdata);
 	}
 
 	public String buildFilePath(String config, String os) throws IOException {
@@ -44,11 +55,12 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		fileName.append(config);
 		fileName.append(SCRIPT_SH);
 
-		StringBuilder path = new StringBuilder("classpath:");
-		path.append(fileName);
-		Resource resource = resourceLoader.getResource(path.toString());
+//		StringBuilder path = new StringBuilder("classpath:");
+//		path.append(fileName);
+//		Resource resource = resourceLoader.getResource(path.toString());
 
-		return resource.getFile().getCanonicalPath();
+//		return resource.getFile().getAbsolutePath();
+		return fileName.toString();
 	}
 
 	public String buildFileFooterString(ScriptRequestBodyDto scriptRequestBody) throws IOException {
@@ -67,9 +79,14 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 	}
 
 	public void getScriptCommandAndLabelFromFile(final List<String> scriptLabels, final List<String> scriptCommand,
-			String filePath, String release) {
+			String filePath, String release) throws IOException {
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+		Resource resource = new ClassPathResource("classpath:" + filePath);
+
+		InputStream inputStream = resource.getInputStream();
+		
+		
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 			String line = reader.readLine();
 			while (line != null) {
 				if (line.contains(ECHO)) {
