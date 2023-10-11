@@ -10,6 +10,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.envify.back.config.Config;
 import com.envify.back.dto.ScriptDto;
 import com.envify.back.dto.ScriptRequestBodyDto;
 import com.envify.back.exception.EnvifyException;
@@ -35,10 +36,10 @@ public class ScriptGeneratorController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScriptGeneratorController.class);
 
 	@Autowired
-	private Config config;
+	private ScriptGeneratorService scriptGeneratorService;
 	
 	@Autowired
-	private ScriptGeneratorService scriptGeneratorService;
+	private ResourceLoader resourceLoader;
 	
 	@PostMapping("/fileContent")
 	public StringBuilder buildScriptFileString(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws IOException {
@@ -88,7 +89,11 @@ public class ScriptGeneratorController {
 	
 	@PostMapping(value = "/file/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody ResponseEntity<byte[]> downloadFile(@RequestBody ScriptRequestBodyDto scriptRequestBody) throws IOException {
-		Path file = Paths.get(config.getScriptFilePath() + scriptRequestBody.getConfig());
+		StringBuilder path = new StringBuilder("classpath:");
+		path.append(scriptRequestBody.getConfig());
+		Resource resource = resourceLoader.getResource(path.toString());
+		
+		Path file = Paths.get(resource.getFile().getAbsolutePath());
         byte[] scriptFileInBytes = Files.readAllBytes(file);
         
         final org.springframework.http.HttpHeaders responseHeaders = new org.springframework.http.HttpHeaders();

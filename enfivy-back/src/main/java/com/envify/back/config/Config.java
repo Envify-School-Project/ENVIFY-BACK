@@ -14,18 +14,12 @@ public class Config {
 	@Value("${envify.api.token.expiration.time}")
 	private String tokenExpirationTimeInMs;
 	
-	@Value("${script.file.path}")
-	private String scriptFilePath;
-	
 	@Value("${envify.api.key.name}")
 	private String apiKey;
 	
 	@Value("${envify.api.key.value}")
 	private String apiKeyValue;
 
-	public String getScriptFilePath() {
-		return scriptFilePath;
-	}
 	
 	public String getApiKey() {
 		return apiKey;
@@ -45,7 +39,7 @@ public class Config {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(apiKey, apiKeyValue, scriptFilePath, tokenExpirationTimeInMs, tokenSecretKey);
+		return Objects.hash(apiKey, apiKeyValue, tokenExpirationTimeInMs, tokenSecretKey);
 	}
 
 	@Override
@@ -58,7 +52,6 @@ public class Config {
 			return false;
 		Config other = (Config) obj;
 		return Objects.equals(apiKey, other.apiKey) && Objects.equals(apiKeyValue, other.apiKeyValue)
-				&& Objects.equals(scriptFilePath, other.scriptFilePath)
 				&& Objects.equals(tokenExpirationTimeInMs, other.tokenExpirationTimeInMs)
 				&& Objects.equals(tokenSecretKey, other.tokenSecretKey);
 	}
