@@ -3,19 +3,19 @@ package com.envify.back.dto.finaldto;
 import java.util.List;
 import java.util.Objects;
 
-public class PackageObject {
-    private int id;
+public class PackageObjectDto {
+    private int packageId;
     private String name;
     private int versionId;
     private String versionNumber;
-    private List<PackagePropertiesObject> packageProperties;
+    private List<PackagePropertiesObjectDto> packageProperties;
 
-    public int getId() {
-        return id;
+    public int getPackageId() {
+        return packageId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPackageId(int packageId) {
+        this.packageId = packageId;
     }
 
     public String getName() {
@@ -42,11 +42,11 @@ public class PackageObject {
         this.versionNumber = versionNumber;
     }
 
-    public List<PackagePropertiesObject> getPackageProperties() {
+    public List<PackagePropertiesObjectDto> getPackageProperties() {
         return packageProperties;
     }
 
-    public void setPackageProperties(List<PackagePropertiesObject> packageProperties) {
+    public void setPackageProperties(List<PackagePropertiesObjectDto> packageProperties) {
         this.packageProperties = packageProperties;
     }
 
@@ -54,12 +54,12 @@ public class PackageObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PackageObject that = (PackageObject) o;
-        return id == that.id && versionId == that.versionId && Objects.equals(name, that.name) && Objects.equals(versionNumber, that.versionNumber) && Objects.equals(packageProperties, that.packageProperties);
+        PackageObjectDto that = (PackageObjectDto) o;
+        return packageId == that.packageId && versionId == that.versionId && Objects.equals(name, that.name) && Objects.equals(versionNumber, that.versionNumber) && Objects.equals(packageProperties, that.packageProperties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, versionId, versionNumber, packageProperties);
+        return Objects.hash(packageId, name, versionId, versionNumber, packageProperties);
     }
 }

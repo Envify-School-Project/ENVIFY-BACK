@@ -8,9 +8,17 @@ import java.util.Objects;
 public class ConfigPackageEntity {
 
     private String configurationScripts;
-    
-    @EmbeddedId
+
+	@EmbeddedId
     private ConfigPackageIdEntity configPackageId;
+
+	public ConfigPackageIdEntity getConfigPackageId() {
+		return configPackageId;
+	}
+
+	public void setConfigPackageId(ConfigPackageIdEntity configPackageId) {
+		this.configPackageId = configPackageId;
+	}
 
     @Column(name = "configuration_scripts")
     public String getConfigurationScripts() {
