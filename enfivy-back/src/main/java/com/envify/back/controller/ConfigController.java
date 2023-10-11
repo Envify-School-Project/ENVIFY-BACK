@@ -2,13 +2,16 @@ package com.envify.back.controller;
 
 import com.envify.back.dto.ConfigDto;
 import com.envify.back.entity.ConfigEntity;
+import com.envify.back.entity.UserEntity;
 import com.envify.back.service.ConfigService;
+import com.envify.back.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,8 @@ public class ConfigController {
 
     @Autowired
     private ConfigService configService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping()
     public ResponseEntity<List<ConfigEntity>> findAllConfigs() {
@@ -64,6 +69,14 @@ public class ConfigController {
     @DeleteMapping("/{id}")
     public void deleteConfigById(@PathVariable int id) {
         configService.deleteConfigById(id);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<ConfigEntity>> findConfigByUserId(Principal principal) {
+        UserEntity user = userService.findByEmail(principal.getName());
+        List<ConfigEntity> configs = configService.findConfigsByUserId(user.getId());
+
+        return ResponseEntity.ok().body(configs);
     }
 
     private void mapConfigDtoToPackageEntity(ConfigDto configDto, ConfigEntity configEntity, int configId) {

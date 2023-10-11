@@ -12,4 +12,5 @@ public interface ConfigService {
     ConfigEntity findConfigById(int id);
     ConfigEntity updateConfig(ConfigEntity configEntity);
     void deleteConfigById(int id);
+    List<ConfigEntity> findConfigsByUserId(int userId);
 }

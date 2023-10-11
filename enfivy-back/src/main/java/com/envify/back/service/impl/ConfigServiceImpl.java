@@ -40,4 +40,9 @@ public class ConfigServiceImpl implements ConfigService {
     public void deleteConfigById(int id) { 
         configDao.deleteById(id); 
     }
+
+    @Override
+    public List<ConfigEntity> findConfigsByUserId(int userId) {
+        return configDao.findConfigsByUserId(userId);
+    }
 }
