@@ -48,7 +48,7 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		path.append(fileName);
 		Resource resource = resourceLoader.getResource(path.toString());
 
-		return resource.getFile().getAbsolutePath();
+		return resource.getFile().getCanonicalPath();
 	}
 
 	public String buildFileFooterString(ScriptRequestBodyDto scriptRequestBody) throws IOException {
