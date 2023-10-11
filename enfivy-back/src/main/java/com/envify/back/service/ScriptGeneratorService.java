@@ -9,7 +9,7 @@ import com.envify.back.dto.ScriptRequestBodyDto;
 public interface ScriptGeneratorService {
 	
 	String readFileAsString(String filePath) throws IOException;
-	String buildFilePath(String config, String os);
+	String buildFilePath(String config, String os) throws IOException;
 	String buildFileFooterString(ScriptRequestBodyDto scriptRequestBody) throws IOException;
 	String buildFileHeaderString(ScriptRequestBodyDto scriptRequestBody) throws IOException;
 	void getScriptCommandAndLabelFromFile(final List<String> scriptLabels, final List<String> scriptCommand, String filePath, String release);
