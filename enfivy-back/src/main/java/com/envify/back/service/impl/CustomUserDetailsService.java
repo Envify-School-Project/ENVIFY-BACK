@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService{
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = userDao.findByEmail(email);
         List<String> roles = new ArrayList<>();
-        roles.add("ADMIN");
+        roles.add("USER");
                 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())

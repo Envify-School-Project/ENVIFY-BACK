@@ -100,23 +100,36 @@ public class LoginController {
 	}
 	
 	@PostMapping("/create")
-	public @ResponseBody ResponseEntity<RequestResponse> createUser(Principal principal, @RequestBody UserDto user) {
+	public @ResponseBody ResponseEntity<RequestResponse> createUser(@RequestBody UserDto user) {
 		final UserEntity userEntity = new UserEntity();
 		userEntity.setEmail(user.getEmail());
+		
+		final RequestResponse requestResponse = new RequestResponse();
 
 		if (userService.isUserExist(userEntity)) {
 			return ResponseEntity.badRequest().body(new RequestResponse("L'utilisateur existe deja dans la bdd", 400));
 		}
 
-		userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+		mapUserDtoToUserEntity(user, userEntity);
 
 		try {
-			userService.saveUser(userEntity);
+			UserEntity userCreated = userDao.save(userEntity);
+			requestResponse.setMessage("Utilisateur crée avec succès");
+			requestResponse.setCode(200);
+			requestResponse.setId(userCreated.getId());
 		} catch (Exception e) {
 			LOGGER.error("Bad request exception");
 			return ResponseEntity.badRequest().body(new RequestResponse("Bad request exeption", 400));
 		}
+		
+		return ResponseEntity.ok().body(requestResponse);
+	}
 
-		return ResponseEntity.ok().body(new RequestResponse("Utilisateur crée avec succès", 200));
+	private void mapUserDtoToUserEntity(UserDto user, final UserEntity userEntity) {
+		userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+		userEntity.setFirstName(user.getFirstName());
+		userEntity.setLastName(user.getLastName());
+		userEntity.setCompany(user.getCompany());
+		userEntity.setUsername(user.getUsername());
 	}
 }
