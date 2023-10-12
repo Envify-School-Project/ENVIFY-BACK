@@ -71,8 +71,8 @@ public class ConfigController {
         configService.deleteConfigById(id);
     }
 
-    @PostMapping("/me")
-    public ResponseEntity<List<ConfigEntity>> findConfigByUserId(@RequestBody int id) {
+    @GetMapping("/me")
+    public ResponseEntity<List<ConfigEntity>> findConfigByUserId(int id) {
         return ResponseEntity.ok().body(configService.findConfigsByUserId(id));
     }
 
