@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.envify.back.config.Config;
@@ -78,31 +77,24 @@ public class JWTUtil {
 		return null;
 	}
 
-	public String generateToken(User user, String expirationDate) {
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-
-		Map<String, Object> claims = new HashMap<>();
-		claims.put("role", authorities);
-		return createToken(claims, user.getUsername(), expirationDate);
-	}
-
 	public String generateToken(UserEntity user, String expirationDate) {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("role", authorities);
-		return createToken(claims, user.getEmail(), expirationDate);
+		claims.put("id", user.getId());
+		claims.put("email", user.getEmail());
+		return createToken(claims, user.getEmail(), user.getId(),expirationDate);
 	}
 
-	private String createToken(Map<String, Object> claims, String email, String expirationTime) {
+	private String createToken(Map<String, Object> claims, String email, Integer id, String expirationTime) {
 		final Long expirationTimeInMs = getExpirationTime(expirationTime);
 
 		final Date createdDate = new Date();
 		final Date expirationDate = new Date(createdDate.getTime() + expirationTimeInMs);
 
-		return Jwts.builder().setClaims(claims).setSubject(email).setIssuedAt(createdDate)
+		return Jwts.builder().setClaims(claims).setIssuedAt(createdDate)
 				.setExpiration(expirationTimeInMs == 0 ? null : expirationDate).signWith(key).compact();
 	}
 

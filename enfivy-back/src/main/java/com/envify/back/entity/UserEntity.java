@@ -17,7 +17,7 @@ public class UserEntity {
 
 	private int id;
 	private String username;
-	private String lastname;
+	private String lastname;q
 	private String firstname;
 	private String email;
 	private String company;
