@@ -10,13 +10,13 @@ import com.envify.back.service.UserService;
 import com.envify.back.entity.ConfigPackageEntity;
 import com.envify.back.entity.ConfigPackageIdEntity;
 import com.envify.back.service.ConfigPackageService;
+import com.envify.back.service.configFileParser.ConfigFileParser;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -50,6 +50,7 @@ public class ConfigController {
         String accessToken = jwtUtil.resolveToken(request);
         Integer userId = jwtUtil.getAllClaimsFromToken(accessToken).get("id", Integer.class);
 
+
         configEntity.setName(finalObjectDto.getName());
         configEntity.setOperatingSystemId(finalObjectDto.getOs().getVersionId());
         configEntity.setDescription(finalObjectDto.getDescription());
@@ -66,7 +67,12 @@ public class ConfigController {
             ConfigPackageEntity configPackageEntity = new ConfigPackageEntity();
 
             configPackageEntity.setConfigPackageId(new ConfigPackageIdEntity(configEntity.getId(), packageObjectDto.getVersionId()));
-            configPackageEntity.setConfigurationScripts(gson.toJson(packageObjectDto.getPackageProperties()));
+
+            if (packageObjectDto.getPackageProperties().size() != 0) {
+                ConfigFileParser configFileParser = new ConfigFileParser(packageObjectDto.getName(), packageObjectDto);
+                configPackageEntity.setConfigurationScripts(configFileParser.parseFile());
+            }
+
 
             try {
                 configPackageService.saveConfigPackage(configPackageEntity);
@@ -77,6 +83,8 @@ public class ConfigController {
 
         return ResponseEntity.ok().body(finalObjectDto);
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ConfigEntity> findConfigById(@PathVariable int id) {

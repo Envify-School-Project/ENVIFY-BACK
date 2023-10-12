@@ -39,11 +39,11 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 	private ResourceLoader resourceLoader;
 
 	public String readFileAsString(String filePath) throws IOException {
-		
+
 		Resource resource = new ClassPathResource("classpath:" + filePath);
-		InputStream inputStream = resource.getInputStream(); 
+		InputStream inputStream = resource.getInputStream();
 		byte[] bdata = FileCopyUtils.copyToByteArray(inputStream);
-		
+
 //		Path path = Paths.get(filePath);
 //		byte[] bytes = Files.readAllBytes(path);
 //		return new String(bytes);
@@ -82,13 +82,13 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 	}
 
 	public void getScriptCommandAndLabelFromFile(final List<String> scriptLabels, final List<String> scriptCommand,
-			String filePath, String release) throws IOException {
+												 String filePath, String release) throws IOException {
 
 		Resource resource = new ClassPathResource("classpath:" + filePath);
 
 		InputStream inputStream = resource.getInputStream();
-		
-		
+
+
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 			String line = reader.readLine();
 			while (line != null) {
@@ -96,11 +96,11 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 					String label = line.substring(5);
 					scriptLabels.add(label.substring(1, label.length() - 1).replace("-", ""));
 				}
-				
+
 				if (line.contains(VERSION)) {
 					line = line.replace(VERSION, release);
 				}
-				
+
 				if (!line.isBlank() && !line.contains(ECHO)) {
 					scriptCommand.add(line);
 				}
@@ -113,11 +113,11 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 	}
 
 	public void fillScriptsLinesList(final List<ScriptDto> scripts, final List<String> scriptLabels,
-			final List<String> scriptCommand) {
+									 final List<String> scriptCommand) {
 		int i = 0;
 
 		Iterator<String> scriptIterator = scriptCommand.iterator();
-		
+
 		while (scriptIterator.hasNext()) {
 			final ScriptDto scriptTmp = new ScriptDto();
 
