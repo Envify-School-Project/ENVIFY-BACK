@@ -9,13 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import com.envify.back.exception.EnvifyException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
@@ -93,11 +92,11 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 					String label = line.substring(5);
 					scriptLabels.add(label.substring(1, label.length() - 1).replace("-", ""));
 				}
-
+				
 				if (line.contains(VERSION)) {
 					line = line.replace(VERSION, release);
 				}
-
+				
 				if (!line.isBlank() && !line.contains(ECHO)) {
 					scriptCommand.add(line);
 				}
@@ -114,7 +113,7 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		int i = 0;
 
 		Iterator<String> scriptIterator = scriptCommand.iterator();
-
+		
 		while (scriptIterator.hasNext()) {
 			final ScriptDto scriptTmp = new ScriptDto();
 
@@ -128,4 +127,24 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		}
 	}
 
+	public List<ScriptDto> buildScripts(List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException {
+		final List<ScriptDto> scripts = new ArrayList<>();
+		final List<String> scriptLabels = new ArrayList<>();
+		final List<String> scriptCommand = new ArrayList<>();
+
+
+		for (ScriptRequestBodyDto packageChoose : scriptRequestBody) {
+			String filePath = buildFilePath(packageChoose.getConfig().toLowerCase(), packageChoose.getOs().toLowerCase());
+
+			getScriptCommandAndLabelFromFile(scriptLabels, scriptCommand, filePath, packageChoose.getRelease().toLowerCase());
+
+			if (scriptCommand.size() != scriptLabels.size()) {
+				throw new EnvifyException("Script Templating error might be considering");
+			}
+
+			fillScriptsLinesList(scripts, scriptLabels, scriptCommand);
+		}
+
+		return scripts;
+	}
 }

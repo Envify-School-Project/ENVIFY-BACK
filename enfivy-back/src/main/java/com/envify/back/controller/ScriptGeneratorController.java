@@ -65,26 +65,8 @@ public class ScriptGeneratorController {
 	}	
 	
 	@PostMapping("/script/lines")
-	public List<ScriptDto> buildScriptLines(@RequestBody List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException, IOException {
-		final List<ScriptDto> scripts = new ArrayList<>();
-		final List<String> scriptLabels = new ArrayList<>();
-		final List<String> scriptCommand = new ArrayList<>();
-		
-		
-		for (ScriptRequestBodyDto packageChoose : scriptRequestBody) {
-			String filePath = scriptGeneratorService.buildFilePath(packageChoose.getConfig().toLowerCase(), packageChoose.getOs().toLowerCase());
-			
-			scriptGeneratorService.getScriptCommandAndLabelFromFile(scriptLabels, scriptCommand, filePath, packageChoose.getRelease().toLowerCase());
-			
-			if(scriptCommand.size() != scriptLabels.size()) {
-				throw new EnvifyException("Script Templating error might be considering");
-			}
-			
-			scriptGeneratorService.fillScriptsLinesList(scripts, scriptLabels, scriptCommand);
-		}
-		
-		
-		return scripts;
+	public List<ScriptDto> buildScriptLines(@RequestBody List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException {
+		return scriptGeneratorService.buildScripts(scriptRequestBody);
 	}	
 	
 	@PostMapping(value = "/file/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
