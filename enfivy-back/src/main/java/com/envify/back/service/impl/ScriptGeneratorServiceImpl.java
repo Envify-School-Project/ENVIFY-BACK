@@ -145,7 +145,6 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 			if (scriptCommand.size() != scriptLabels.size()) {
 				throw new EnvifyException("Script Templating error might be considering");
 			}
-
 			fillScriptsLinesList(scripts, scriptLabels, scriptCommand);
 		}
 

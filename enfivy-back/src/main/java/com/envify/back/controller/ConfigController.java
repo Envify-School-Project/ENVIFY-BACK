@@ -1,11 +1,13 @@
 package com.envify.back.controller;
 
 import com.envify.back.dto.ConfigDto;
+import com.envify.back.dto.ScriptDto;
 import com.envify.back.dto.finaldto.FinalObjectDto;
 import com.envify.back.dto.finaldto.PackageObjectDto;
 import com.envify.back.entity.ConfigEntity;
 import com.envify.back.security.JWTUtil;
 import com.envify.back.service.ConfigService;
+import com.envify.back.service.ScriptGeneratorService;
 import com.envify.back.service.UserService;
 import com.envify.back.entity.ConfigPackageEntity;
 import com.envify.back.entity.ConfigPackageIdEntity;
@@ -35,6 +37,8 @@ public class ConfigController {
     private UserService userService;
     @Autowired
     private ConfigPackageService configPackageService;
+    @Autowired
+    private ScriptGeneratorService scriptGeneratorService;
 
     @GetMapping()
     public ResponseEntity<List<ConfigEntity>> findAllConfigs() {
@@ -80,6 +84,8 @@ public class ConfigController {
                 LOGGER.error(e.toString());
             }
         }
+
+        List<ScriptDto> scripts = scriptGeneratorService.buildScripts();
 
         return ResponseEntity.ok().body(finalObjectDto);
     }
