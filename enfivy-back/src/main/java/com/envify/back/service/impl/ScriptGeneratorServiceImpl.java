@@ -14,7 +14,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.envify.back.exception.EnvifyException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
@@ -127,7 +131,7 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		}
 	}
 
-	public List<ScriptDto> buildScripts(List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException {
+	public List<ScriptDto> buildScripts(List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException, IOException {
 		final List<ScriptDto> scripts = new ArrayList<>();
 		final List<String> scriptLabels = new ArrayList<>();
 		final List<String> scriptCommand = new ArrayList<>();

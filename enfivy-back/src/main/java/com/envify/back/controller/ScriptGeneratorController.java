@@ -65,7 +65,7 @@ public class ScriptGeneratorController {
 	}	
 	
 	@PostMapping("/script/lines")
-	public List<ScriptDto> buildScriptLines(@RequestBody List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException {
+	public List<ScriptDto> buildScriptLines(@RequestBody List<ScriptRequestBodyDto> scriptRequestBody) throws EnvifyException, IOException {
 		return scriptGeneratorService.buildScripts(scriptRequestBody);
 	}	
 	
