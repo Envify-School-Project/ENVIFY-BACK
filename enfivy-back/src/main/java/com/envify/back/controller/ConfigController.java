@@ -72,11 +72,8 @@ public class ConfigController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<ConfigEntity>> findConfigByUserId(Principal principal) {
-        UserEntity user = userService.findByEmail(principal.getName());
-        List<ConfigEntity> configs = configService.findConfigsByUserId(user.getId());
-
-        return ResponseEntity.ok().body(configs);
+    public ResponseEntity<List<ConfigEntity>> findConfigByUserId(int id) {
+        return ResponseEntity.ok().body(configService.findConfigsByUserId(id));
     }
 
     private void mapConfigDtoToPackageEntity(ConfigDto configDto, ConfigEntity configEntity, int configId) {
