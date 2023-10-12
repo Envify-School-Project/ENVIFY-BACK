@@ -1,9 +1,16 @@
 package com.envify.back.controller;
 
 import com.envify.back.dto.ConfigDto;
+import com.envify.back.dto.finaldto.FinalObjectDto;
+import com.envify.back.dto.finaldto.PackageObjectDto;
 import com.envify.back.entity.ConfigEntity;
 import com.envify.back.security.JWTUtil;
 import com.envify.back.service.ConfigService;
+import com.envify.back.service.UserService;
+import com.envify.back.entity.ConfigPackageEntity;
+import com.envify.back.entity.ConfigPackageIdEntity;
+import com.envify.back.service.ConfigPackageService;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +25,16 @@ import java.util.List;
 public class ConfigController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigController.class);
+    Gson gson = new Gson();
 
     @Autowired
     private ConfigService configService;
     @Autowired
     private JWTUtil jwtUtil;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ConfigPackageService configPackageService;
 
     @GetMapping()
     public ResponseEntity<List<ConfigEntity>> findAllConfigs() {
@@ -32,21 +44,38 @@ public class ConfigController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createConfig(@RequestBody ConfigDto configDto) {
-        final ConfigEntity configCreated = new ConfigEntity();
-        configCreated.setName(configDto.getName());
-        configCreated.setDescription(configDto.getDescription());
-        configCreated.setUserId(configDto.getUserId());
-        configCreated.setOperatingSystemId(configDto.getOperatingSystemId());
+    public ResponseEntity<FinalObjectDto> createConfig(@RequestBody FinalObjectDto finalObjectDto, HttpServletRequest request) {
 
-        try {
-            configService.saveConfig(configCreated);
+        final ConfigEntity configEntity = new ConfigEntity();
+        String accessToken = jwtUtil.resolveToken(request);
+        Integer userId = jwtUtil.getAllClaimsFromToken(accessToken).get("id", Integer.class);
+
+        configEntity.setName(finalObjectDto.getName());
+        configEntity.setOperatingSystemId(finalObjectDto.getOs().getVersionId());
+        configEntity.setDescription(finalObjectDto.getDescription());
+
+        configEntity.setUserId(userId);
+
+         try {
+            configService.saveConfig(configEntity);
         } catch (Exception e) {
             LOGGER.error(e.toString());
-            return ResponseEntity.badRequest().body("Bad request exception");
         }
 
-        return ResponseEntity.ok().body("Config successfully created");
+        for (PackageObjectDto packageObjectDto: finalObjectDto.getPackages()) {
+            ConfigPackageEntity configPackageEntity = new ConfigPackageEntity();
+
+            configPackageEntity.setConfigPackageId(new ConfigPackageIdEntity(configEntity.getId(), packageObjectDto.getVersionId()));
+            configPackageEntity.setConfigurationScripts(gson.toJson(packageObjectDto.getPackageProperties()));
+
+            try {
+                configPackageService.saveConfigPackage(configPackageEntity);
+            } catch (Exception e) {
+                LOGGER.error(e.toString());
+            }
+        }
+
+        return ResponseEntity.ok().body(finalObjectDto);
     }
 
     @GetMapping("/{id}")

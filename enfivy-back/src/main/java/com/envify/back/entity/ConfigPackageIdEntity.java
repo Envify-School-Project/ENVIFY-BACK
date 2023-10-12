@@ -11,8 +11,6 @@ public class ConfigPackageIdEntity implements Serializable {
 	private int configId;
     private int packageVersionId;
     
-    
-    
 	public int getConfigId() {
 		return configId;
 	}

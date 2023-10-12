@@ -1,9 +1,6 @@
 package com.envify.back.controller;
 
-import com.envify.back.dao.ConfigPackageFileDao;
-import com.envify.back.dto.ConfigDto;
 import com.envify.back.dto.ConfigPackageFileDto;
-import com.envify.back.entity.ConfigEntity;
 import com.envify.back.entity.ConfigPackageFileEntity;
 import com.envify.back.service.ConfigPackageFileService;
 import com.google.gson.Gson;

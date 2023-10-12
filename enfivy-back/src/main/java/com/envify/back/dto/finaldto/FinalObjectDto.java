@@ -3,10 +3,11 @@ package com.envify.back.dto.finaldto;
 import java.util.List;
 import java.util.Objects;
 
-public class FinalObject {
+public class FinalObjectDto {
     private String name;
-    private OperatingSystemObject operatingSystem;
-    private List<PackageObject> packages;
+    private String description;
+    private OperatingSystemObjectDto os;
+    private List<PackageObjectDto> packages;
 
     public String getName() {
         return name;
@@ -16,19 +17,27 @@ public class FinalObject {
         this.name = name;
     }
 
-    public OperatingSystemObject getOperatingSystem() {
-        return operatingSystem;
+    public String getDescription() {
+        return description;
     }
 
-    public void setOperatingSystem(OperatingSystemObject operatingSystem) {
-        this.operatingSystem = operatingSystem;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public List<PackageObject> getPackages() {
+    public OperatingSystemObjectDto getOs() {
+        return os;
+    }
+
+    public void setOs(OperatingSystemObjectDto os) {
+        this.os = os;
+    }
+
+    public List<PackageObjectDto> getPackages() {
         return packages;
     }
 
-    public void setPackages(List<PackageObject> packages) {
+    public void setPackages(List<PackageObjectDto> packages) {
         this.packages = packages;
     }
 
@@ -36,12 +45,12 @@ public class FinalObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FinalObject that = (FinalObject) o;
-        return Objects.equals(name, that.name) && Objects.equals(operatingSystem, that.operatingSystem) && Objects.equals(packages, that.packages);
+        FinalObjectDto that = (FinalObjectDto) o;
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(os, that.os) && Objects.equals(packages, that.packages);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, operatingSystem, packages);
+        return Objects.hash(name, description, os, packages);
     }
 }
