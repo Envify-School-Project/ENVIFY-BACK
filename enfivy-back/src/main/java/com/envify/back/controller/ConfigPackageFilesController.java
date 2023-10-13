@@ -31,9 +31,8 @@ public class ConfigPackageFilesController {
 
     @PostMapping("/by_package_version_ids")
     public ResponseEntity<List<ConfigPackageFileEntity>> findAllFilesByPackageVersionIds(@RequestBody ConfigPackageFileGetByIdsDto configPackageFileGetByIdsDto) {
-
         List<Integer> packageVersionIds = configPackageFileGetByIdsDto.getPackageVersionIds();
-        List<ConfigPackageFileEntity> configPackageFiles = configPackageFileService.findAllConfigPackageFilesByPackageVersionIds(configPackageFileGetByIdsDto.getPackageVersionIds());
+        List<ConfigPackageFileEntity> configPackageFiles = configPackageFileService.findAllConfigPackageFilesByPackageVersionIds(packageVersionIds);
 
         return ResponseEntity.ok().body(configPackageFiles);
     }
