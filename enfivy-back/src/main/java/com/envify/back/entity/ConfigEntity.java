@@ -65,7 +65,7 @@ public class ConfigEntity {
 	}
 
 	@Query("""
-		SELECT p
+		SELECT p.name, pv.versionNumber
 		FROM PackageEntity p
 		LEFT JOIN PackageVersionEntity pv ON p.id = pv.packageId
 		LEFT JOIN ConfigPackageIdEntity cpi ON pv.id = cpi.packageVersionId
