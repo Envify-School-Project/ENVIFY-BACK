@@ -91,6 +91,10 @@ public class UserEntity {
 		return role;
 	}
 
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
