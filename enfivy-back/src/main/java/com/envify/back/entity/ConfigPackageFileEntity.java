@@ -6,7 +6,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "package_config_files")
 public class ConfigPackageFileEntity {
-    private int id;
+    private Integer id;
     private String description;
     private String properties;
     private int packageVersionId;
@@ -14,11 +14,11 @@ public class ConfigPackageFileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
