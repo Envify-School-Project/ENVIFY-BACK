@@ -15,6 +15,8 @@ public interface UserService {
 	boolean isUserExist(UserEntity user);
 	
 	UserEntity findByEmail(String email);
+
+	UserEntity findByRole(String role);
 	
 	void saveUser(UserEntity user);
 }

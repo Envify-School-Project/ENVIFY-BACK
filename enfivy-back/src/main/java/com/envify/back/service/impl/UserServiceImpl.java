@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public UserEntity findByRole(String role) {
+		return userDao.findByRole(role);
+	}
+
+	@Override
 	public void saveUser(UserEntity user) {
 		userDao.save(user);
 	}

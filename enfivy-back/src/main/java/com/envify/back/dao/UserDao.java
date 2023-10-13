@@ -15,4 +15,5 @@ public interface UserDao extends JpaRepository<UserEntity, Long> {
 	UserEntity getById(int id);
 	void deleteById(int id);
 	UserEntity findByEmail(String email);
+	UserEntity findByRole(String role);
 }

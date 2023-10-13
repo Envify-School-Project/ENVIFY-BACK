@@ -1,8 +1,6 @@
 package com.envify.back.service.impl;
 
-import com.envify.back.dao.ConfigPackageDao;
 import com.envify.back.dao.ConfigPackageFileDao;
-import com.envify.back.entity.ConfigEntity;
 import com.envify.back.entity.ConfigPackageFileEntity;
 import com.envify.back.service.ConfigPackageFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,13 @@ public class ConfigPackageFileServiceImpl implements ConfigPackageFileService {
     @Override
     public List<ConfigPackageFileEntity> findAllConfigPackageFiles() {
         return configPackageFileDao.findAll();
+    }
+
+    @Override
+    public List<ConfigPackageFileEntity> findAllConfigPackageFilesByPackageVersionIds(List<Integer> packageVersionIds) {
+        Iterable<Long> ids = packageVersionIds.stream().map(Integer::longValue).toList();
+
+        return configPackageFileDao.findAllById(ids);
     }
 
     @Override

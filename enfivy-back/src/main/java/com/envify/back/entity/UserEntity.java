@@ -21,6 +21,7 @@ public class UserEntity {
 	private String firstname;
 	private String email;
 	private String company;
+	private String role;
 	@JsonIgnore
 	private String password;
 
@@ -76,10 +77,6 @@ public class UserEntity {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	@Column(name = "company", nullable = true)
 	public String getCompany() {
 		return company;
@@ -87,6 +84,19 @@ public class UserEntity {
 
 	public void setCompany(String company) {
 		this.company = company;
+	}
+
+	@Column(name = "role", nullable = false)
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
@@ -98,7 +108,8 @@ public class UserEntity {
 		UserEntity that = (UserEntity) o;
 		return id == that.id && Objects.equals(username, that.username) && Objects.equals(lastname, that.lastname)
 				&& Objects.equals(firstname, that.firstname) && Objects.equals(email, that.email)
-				&& Objects.equals(company, that.company) && Objects.equals(password, that.password);
+				&& Objects.equals(company, that.company) && Objects.equals(role, that.role)
+				&& Objects.equals(password, that.password);
 	}
 
 	@Override

@@ -28,6 +28,13 @@ public class ConfigPackageFilesController {
         return ResponseEntity.ok().body(configPackageFiles);
     }
 
+    @PostMapping("/by_package_version_ids")
+    public ResponseEntity<List<ConfigPackageFileEntity>> findAllFilesByPackageVersionIds(@RequestBody List<Integer> packageVersionIds) {
+        List<ConfigPackageFileEntity> configPackageFiles = configPackageFileService.findAllConfigPackageFilesByPackageVersionIds(packageVersionIds);
+
+        return ResponseEntity.ok().body(configPackageFiles);
+    }
+
     @PostMapping("/")
     public ResponseEntity<String> createConfigPackageFile(@RequestBody ConfigPackageFileDto configPackageFileDto) {
         final ConfigPackageFileEntity configPackageFileCreated = new ConfigPackageFileEntity();
