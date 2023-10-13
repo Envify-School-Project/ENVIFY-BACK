@@ -27,9 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class FinalResponseGeneratorServiceImpl implements FinalResponseGeneratorService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(FinalResponseGeneratorServiceImpl.class);
+	
     @Autowired
     private JWTUtil jwtUtil;
     @Autowired
@@ -38,7 +39,7 @@ public class FinalResponseGeneratorServiceImpl implements FinalResponseGenerator
     private ConfigPackageService configPackageService;
     @Autowired
     private ScriptGeneratorService scriptGeneratorService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(FinalResponseGeneratorServiceImpl.class);
+    
     @Override
     public FinalResponseDto generateCompletedConfig(FinalObjectDto finalObjectDto, HttpServletRequest request) throws EnvifyException, IOException {
         ConfigEntity configEntity = generateNewConfig(finalObjectDto, request);
