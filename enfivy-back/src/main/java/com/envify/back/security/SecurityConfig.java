@@ -99,8 +99,10 @@ public class SecurityConfig {
 	@Bean
 	String[] allowedOrigins() {
 		final List<String> allowedOrigins = new ArrayList<>();
+		final String localFrontUrl = "http://localhost:3000";
 
 		allowedOrigins.add(url);
+		allowedOrigins.add(localFrontUrl);
 
 		if (StringUtils.isNotBlank(frontUrl)) {
 			allowedOrigins.add(frontUrl);
