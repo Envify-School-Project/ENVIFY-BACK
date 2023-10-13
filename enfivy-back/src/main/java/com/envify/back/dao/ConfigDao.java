@@ -11,4 +11,5 @@ public interface ConfigDao extends JpaRepository<ConfigEntity, Long> {
     ConfigEntity getById(int id);
     void deleteById(int id);
     List<ConfigEntity> findConfigsByUserId(int userId);
+    List<ConfigEntity> findConfigsByUserRole(String userRole);
 }

@@ -13,4 +13,5 @@ public interface ConfigService {
     ConfigEntity updateConfig(ConfigEntity configEntity);
     void deleteConfigById(int id);
     List<ConfigEntity> findConfigsByUserId(int userId);
+    List<ConfigEntity> findConfigsByUserRole(String userRole);
 }
