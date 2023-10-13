@@ -79,6 +79,13 @@ public class ConfigController {
         return ResponseEntity.ok().body(configs);
     }
 
+    @GetMapping("/suggested")
+    public ResponseEntity<List<ConfigEntity>> findSuggestedConfigs() {
+        List<ConfigEntity> configs = configService.findConfigsByUserRole("suggested");
+
+        return ResponseEntity.ok().body(configs);
+    }
+
     private void mapConfigDtoToPackageEntity(ConfigDto configDto, ConfigEntity configEntity, int configId) {
         configEntity.setId(configId);
         configEntity.setName(configDto.getName());
