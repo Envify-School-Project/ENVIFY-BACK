@@ -1,9 +1,6 @@
 package com.envify.back.controller;
 
-import com.envify.back.dao.ConfigPackageFileDao;
-import com.envify.back.dto.ConfigDto;
 import com.envify.back.dto.ConfigPackageFileDto;
-import com.envify.back.entity.ConfigEntity;
 import com.envify.back.entity.ConfigPackageFileEntity;
 import com.envify.back.service.ConfigPackageFileService;
 import com.google.gson.Gson;
@@ -27,6 +24,13 @@ public class ConfigPackageFilesController {
     @GetMapping("/")
     public ResponseEntity<List<ConfigPackageFileEntity>> findAllFiles() {
         List<ConfigPackageFileEntity> configPackageFiles = configPackageFileService.findAllConfigPackageFiles();
+
+        return ResponseEntity.ok().body(configPackageFiles);
+    }
+
+    @PostMapping("/by_package_version_ids")
+    public ResponseEntity<List<ConfigPackageFileEntity>> findAllFilesByPackageVersionIds(@RequestBody List<Integer> packageVersionIds) {
+        List<ConfigPackageFileEntity> configPackageFiles = configPackageFileService.findAllConfigPackageFilesByPackageVersionIds(packageVersionIds);
 
         return ResponseEntity.ok().body(configPackageFiles);
     }
