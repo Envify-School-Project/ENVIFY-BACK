@@ -1,7 +1,7 @@
 package com.envify.back.service.configFileParser;
 
-import com.envify.back.dto.finaldto.PackageObjectDto;
-import com.envify.back.dto.finaldto.PackagePropertiesObjectDto;
+import com.envify.back.dto.ReceivedPackageDto;
+import com.envify.back.dto.ReceivedPackagePropertiesDto;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class ConfigFileParser {
     private static final String folderPath = "./src/main/resources/fileConfigTemplate/%s/";
     private String packageName;
-    private PackageObjectDto packageObjectDto;
+    private ReceivedPackageDto receivedPackageDto;
 
     public String getPackageName() {
         return packageName;
@@ -23,17 +23,17 @@ public class ConfigFileParser {
         this.packageName = packageName;
     }
 
-    public PackageObjectDto getPackageObjectDto() {
-        return packageObjectDto;
+    public ReceivedPackageDto getPackageObjectDto() {
+        return receivedPackageDto;
     }
 
-    public void setPackageObjectDto(PackageObjectDto packageObjectDto) {
-        this.packageObjectDto = packageObjectDto;
+    public void setPackageObjectDto(ReceivedPackageDto receivedPackageDto) {
+        this.receivedPackageDto = receivedPackageDto;
     }
 
-    public ConfigFileParser(String packageName, PackageObjectDto packageObjectDto) {
+    public ConfigFileParser(String packageName, ReceivedPackageDto receivedPackageDto) {
         this.packageName = packageName;
-        this.packageObjectDto = packageObjectDto;
+        this.receivedPackageDto = receivedPackageDto;
     }
 
     private String configFolderPath() {
@@ -42,11 +42,11 @@ public class ConfigFileParser {
 
 
     private String findPatternAndReplace(String line) {
-        List<PackagePropertiesObjectDto> properties = packageObjectDto.getPackageProperties();
+        List<ReceivedPackagePropertiesDto> properties = receivedPackageDto.getPackageProperties();
         StringBuilder newLine = new StringBuilder();
         boolean found = false;
 
-        for (PackagePropertiesObjectDto property : properties) {
+        for (ReceivedPackagePropertiesDto property : properties) {
             String patternToReplace = "$" + property.getField();
             String replacementPattern = property.getValue();
 

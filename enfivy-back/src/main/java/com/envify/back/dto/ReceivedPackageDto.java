@@ -1,14 +1,14 @@
-package com.envify.back.dto.finaldto;
+package com.envify.back.dto;
 
 import java.util.List;
 import java.util.Objects;
 
-public class PackageObjectDto {
+public class ReceivedPackageDto {
     private int packageId;
     private String name;
     private int versionId;
     private String versionNumber;
-    private List<PackagePropertiesObjectDto> packageProperties;
+    private List<ReceivedPackagePropertiesDto> packageProperties;
 
     public int getPackageId() {
         return packageId;
@@ -42,11 +42,11 @@ public class PackageObjectDto {
         this.versionNumber = versionNumber;
     }
 
-    public List<PackagePropertiesObjectDto> getPackageProperties() {
+    public List<ReceivedPackagePropertiesDto> getPackageProperties() {
         return packageProperties;
     }
 
-    public void setPackageProperties(List<PackagePropertiesObjectDto> packageProperties) {
+    public void setPackageProperties(List<ReceivedPackagePropertiesDto> packageProperties) {
         this.packageProperties = packageProperties;
     }
 
@@ -54,7 +54,7 @@ public class PackageObjectDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PackageObjectDto that = (PackageObjectDto) o;
+        ReceivedPackageDto that = (ReceivedPackageDto) o;
         return packageId == that.packageId && versionId == that.versionId && Objects.equals(name, that.name) && Objects.equals(versionNumber, that.versionNumber) && Objects.equals(packageProperties, that.packageProperties);
     }
 

@@ -1,13 +1,13 @@
-package com.envify.back.dto.finaldto;
+package com.envify.back.dto;
 
 import java.util.List;
 import java.util.Objects;
 
-public class FinalObjectDto {
+public class ReceivedConfigObjectDto {
     private String name;
     private String description;
-    private OperatingSystemObjectDto os;
-    private List<PackageObjectDto> packages;
+    private ReceivedOperatingSystemDto os;
+    private List<ReceivedPackageDto> packages;
 
     public String getName() {
         return name;
@@ -25,19 +25,19 @@ public class FinalObjectDto {
         this.description = description;
     }
 
-    public OperatingSystemObjectDto getOs() {
+    public ReceivedOperatingSystemDto getOs() {
         return os;
     }
 
-    public void setOs(OperatingSystemObjectDto os) {
+    public void setOs(ReceivedOperatingSystemDto os) {
         this.os = os;
     }
 
-    public List<PackageObjectDto> getPackages() {
+    public List<ReceivedPackageDto> getPackages() {
         return packages;
     }
 
-    public void setPackages(List<PackageObjectDto> packages) {
+    public void setPackages(List<ReceivedPackageDto> packages) {
         this.packages = packages;
     }
 
@@ -45,7 +45,7 @@ public class FinalObjectDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FinalObjectDto that = (FinalObjectDto) o;
+        ReceivedConfigObjectDto that = (ReceivedConfigObjectDto) o;
         return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(os, that.os) && Objects.equals(packages, that.packages);
     }
 

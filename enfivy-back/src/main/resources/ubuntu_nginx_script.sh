@@ -1,7 +1,7 @@
 echo "-----------------Update of repositories-----------------"
 sudo apt update
 
-ehco "---------firewall allows SSH connections----------"
+echo "---------firewall allows SSH connections----------"
 sudo ufw allow OpenSSH
 
 echo "-----------------Install nginx-----------------"

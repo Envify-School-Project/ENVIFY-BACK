@@ -1,15 +1,13 @@
-package com.envify.back.dto.finaldto;
-
-import com.envify.back.dto.ScriptDto;
+package com.envify.back.dto;
 
 import java.util.List;
 import java.util.Objects;
 
-public class FinalResponseDto {
+public class CompletedConfigDto {
     private List<ScriptDto> scripts;
-    private List<FinalResponseConfigFileDto> configFiles;
+    private List<CompletedConfigFileDto> configFiles;
 
-    public FinalResponseDto(List<ScriptDto> scripts, List<FinalResponseConfigFileDto> configFiles) {
+    public CompletedConfigDto(List<ScriptDto> scripts, List<CompletedConfigFileDto> configFiles) {
         this.scripts = scripts;
         this.configFiles = configFiles;
     }
@@ -22,11 +20,11 @@ public class FinalResponseDto {
         this.scripts = scripts;
     }
 
-    public List<FinalResponseConfigFileDto> getConfigFiles() {
+    public List<CompletedConfigFileDto> getConfigFiles() {
         return configFiles;
     }
 
-    public void setConfigFiles(List<FinalResponseConfigFileDto> configFiles) {
+    public void setConfigFiles(List<CompletedConfigFileDto> configFiles) {
         this.configFiles = configFiles;
     }
 
@@ -34,7 +32,7 @@ public class FinalResponseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FinalResponseDto that = (FinalResponseDto) o;
+        CompletedConfigDto that = (CompletedConfigDto) o;
         return Objects.equals(scripts, that.scripts) && Objects.equals(configFiles, that.configFiles);
     }
 

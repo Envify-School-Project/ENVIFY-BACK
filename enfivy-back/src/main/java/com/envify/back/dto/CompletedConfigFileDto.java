@@ -1,17 +1,17 @@
-package com.envify.back.dto.finaldto;
+package com.envify.back.dto;
 
 import java.util.Objects;
 
-public class FinalResponseConfigFileDto {
+public class CompletedConfigFileDto {
     private String fileName;
     private String file;
 
-    public FinalResponseConfigFileDto(String fileName, String file) {
+    public CompletedConfigFileDto(String fileName, String file) {
         this.fileName = fileName;
         this.file = file;
     }
 
-    public FinalResponseConfigFileDto() {
+    public CompletedConfigFileDto() {
     }
 
     public String getFileName() {
@@ -34,7 +34,7 @@ public class FinalResponseConfigFileDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FinalResponseConfigFileDto that = (FinalResponseConfigFileDto) o;
+        CompletedConfigFileDto that = (CompletedConfigFileDto) o;
         return Objects.equals(fileName, that.fileName) && Objects.equals(file, that.file);
     }
 

@@ -1,8 +1,8 @@
-package com.envify.back.dto.finaldto;
+package com.envify.back.dto;
 
 import java.util.Objects;
 
-public class OperatingSystemObjectDto {
+public class ReceivedOperatingSystemDto {
     private String name;
     private int versionId;
     private String versionNumber;
@@ -35,7 +35,7 @@ public class OperatingSystemObjectDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OperatingSystemObjectDto that = (OperatingSystemObjectDto) o;
+        ReceivedOperatingSystemDto that = (ReceivedOperatingSystemDto) o;
         return versionId == that.versionId && Objects.equals(name, that.name) && Objects.equals(versionNumber, that.versionNumber);
     }
 
