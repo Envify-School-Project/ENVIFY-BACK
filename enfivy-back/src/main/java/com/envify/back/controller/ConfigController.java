@@ -1,28 +1,30 @@
 package com.envify.back.controller;
 
 import com.envify.back.dto.ConfigDto;
+import com.envify.back.dto.ReceivedConfigObjectDto;
+import com.envify.back.dto.CompletedConfigDto;
 import com.envify.back.entity.ConfigEntity;
+import com.envify.back.exception.EnvifyException;
 import com.envify.back.security.JWTUtil;
+import com.envify.back.service.*;
 import com.envify.back.service.ConfigService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/configs")
 public class ConfigController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigController.class);
-
     @Autowired
     private ConfigService configService;
     @Autowired
     private JWTUtil jwtUtil;
+    @Autowired
+    private CompletedConfigGeneratorService completedConfigGeneratorService;
 
     @GetMapping()
     public ResponseEntity<List<ConfigEntity>> findAllConfigs() {
@@ -32,21 +34,10 @@ public class ConfigController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createConfig(@RequestBody ConfigDto configDto) {
-        final ConfigEntity configCreated = new ConfigEntity();
-        configCreated.setName(configDto.getName());
-        configCreated.setDescription(configDto.getDescription());
-        configCreated.setUserId(configDto.getUserId());
-        configCreated.setOperatingSystemId(configDto.getOperatingSystemId());
+    public ResponseEntity<CompletedConfigDto> createConfig(@RequestBody ReceivedConfigObjectDto receivedConfigObjectDto, HttpServletRequest request) throws EnvifyException, IOException {
+        CompletedConfigDto completedConfigDto = completedConfigGeneratorService.generateCompletedConfig(receivedConfigObjectDto, request);
 
-        try {
-            configService.saveConfig(configCreated);
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
-            return ResponseEntity.badRequest().body("Bad request exception");
-        }
-
-        return ResponseEntity.ok().body("Config successfully created");
+        return ResponseEntity.ok().body(completedConfigDto);
     }
 
     @GetMapping("/{id}")
