@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConfigFileParser {
-    private static String folderPath = "./src/main/resources/fileConfigTemplate/%s/";
+    private static final String folderPath = "./src/main/resources/fileConfigTemplate/%s/";
     private String packageName;
     private PackageObjectDto packageObjectDto;
 
@@ -80,7 +80,7 @@ public class ConfigFileParser {
         }
     }
 
-    private File getFirstFileFromFolder() throws IOException {
+    public File getFirstFileFromFolder() throws IOException {
         File folder = new File(configFolderPath());
 
         if (folder.exists() && folder.isDirectory()) {

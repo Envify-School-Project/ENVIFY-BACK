@@ -2,16 +2,17 @@ package com.envify.back.controller;
 
 import com.envify.back.dto.ConfigDto;
 import com.envify.back.dto.ScriptDto;
+import com.envify.back.dto.ScriptRequestBodyDto;
 import com.envify.back.dto.finaldto.FinalObjectDto;
+import com.envify.back.dto.finaldto.FinalResponseConfigFileDto;
+import com.envify.back.dto.finaldto.FinalResponseDto;
 import com.envify.back.dto.finaldto.PackageObjectDto;
 import com.envify.back.entity.ConfigEntity;
-import com.envify.back.security.JWTUtil;
-import com.envify.back.service.ConfigService;
-import com.envify.back.service.ScriptGeneratorService;
-import com.envify.back.service.UserService;
 import com.envify.back.entity.ConfigPackageEntity;
 import com.envify.back.entity.ConfigPackageIdEntity;
-import com.envify.back.service.ConfigPackageService;
+import com.envify.back.exception.EnvifyException;
+import com.envify.back.security.JWTUtil;
+import com.envify.back.service.*;
 import com.envify.back.service.configFileParser.ConfigFileParser;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -19,7 +20,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,6 +43,8 @@ public class ConfigController {
     private ConfigPackageService configPackageService;
     @Autowired
     private ScriptGeneratorService scriptGeneratorService;
+    @Autowired
+    private FinalResponseGeneratorService finalResponseGeneratorService;
 
     @GetMapping()
     public ResponseEntity<List<ConfigEntity>> findAllConfigs() {
@@ -48,46 +54,44 @@ public class ConfigController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<FinalObjectDto> createConfig(@RequestBody FinalObjectDto finalObjectDto, HttpServletRequest request) {
+    public ResponseEntity<FinalResponseDto> createConfig(@RequestBody FinalObjectDto finalObjectDto, HttpServletRequest request) throws EnvifyException, IOException {
+        ConfigEntity configEntity = finalResponseGeneratorService.generateNewConfig(finalObjectDto, request);
 
-        final ConfigEntity configEntity = new ConfigEntity();
-        String accessToken = jwtUtil.resolveToken(request);
-        Integer userId = jwtUtil.getAllClaimsFromToken(accessToken).get("id", Integer.class);
-
-
-        configEntity.setName(finalObjectDto.getName());
-        configEntity.setOperatingSystemId(finalObjectDto.getOs().getVersionId());
-        configEntity.setDescription(finalObjectDto.getDescription());
-
-        configEntity.setUserId(userId);
-
-         try {
-            configService.saveConfig(configEntity);
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
-        }
+        List<ScriptRequestBodyDto> scriptRequestBody = new ArrayList<>();
+        List<FinalResponseConfigFileDto> configFiles = new ArrayList<>();
 
         for (PackageObjectDto packageObjectDto: finalObjectDto.getPackages()) {
             ConfigPackageEntity configPackageEntity = new ConfigPackageEntity();
+
+            ScriptRequestBodyDto scriptRequestBodyDto = finalResponseGeneratorService.generateScriptBodyRequestDto(finalObjectDto, packageObjectDto);
+
 
             configPackageEntity.setConfigPackageId(new ConfigPackageIdEntity(configEntity.getId(), packageObjectDto.getVersionId()));
 
             if (packageObjectDto.getPackageProperties().size() != 0) {
                 ConfigFileParser configFileParser = new ConfigFileParser(packageObjectDto.getName(), packageObjectDto);
                 configPackageEntity.setConfigurationScripts(configFileParser.parseFile());
-            }
 
+                FinalResponseConfigFileDto finalResponseConfigFileDto = finalResponseGeneratorService.generateFinalResponseConfigFileDto(configFileParser);
+                configFiles.add(finalResponseConfigFileDto);
+            }
 
             try {
                 configPackageService.saveConfigPackage(configPackageEntity);
             } catch (Exception e) {
                 LOGGER.error(e.toString());
             }
+
+            scriptRequestBody.add(scriptRequestBodyDto);
         }
 
-        List<ScriptDto> scripts = scriptGeneratorService.buildScripts();
+        List<ScriptDto> scripts = scriptGeneratorService.buildScripts(scriptRequestBody);
 
-        return ResponseEntity.ok().body(finalObjectDto);
+        FinalResponseDto finalResponseDto = new FinalResponseDto(scripts, configFiles);
+// REMOVE CODE ABOVE AND UNCOMMENT BELOW
+//        FinalResponseDto finalResponseDto = finalResponseGeneratorService.generateCompletedConfig(finalObjectDto, request);
+
+        return ResponseEntity.ok().body(finalResponseDto);
     }
 
 
