@@ -81,14 +81,13 @@ public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGener
 
     public ConfigEntity generateNewConfig(ReceivedConfigObjectDto receivedConfigObjectDto, HttpServletRequest request) {
         ConfigEntity configEntity = new ConfigEntity();
-//        String accessToken = jwtUtil.resolveToken(request);
-//        Integer userId = jwtUtil.getAllClaimsFromToken(accessToken).get("id", Integer.class);
+        String accessToken = jwtUtil.resolveToken(request);
+        Integer userId = jwtUtil.getAllClaimsFromToken(accessToken).get("id", Integer.class);
 
         configEntity.setName(receivedConfigObjectDto.getName());
         configEntity.setOperatingSystemId(receivedConfigObjectDto.getOs().getVersionId());
         configEntity.setDescription(receivedConfigObjectDto.getDescription());
-//        configEntity.setUserId(userId);
-        configEntity.setUserId(1);
+        configEntity.setUserId(userId);
 
         try {
             configService.saveConfig(configEntity);
