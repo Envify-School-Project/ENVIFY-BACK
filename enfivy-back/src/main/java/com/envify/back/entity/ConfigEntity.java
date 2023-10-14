@@ -1,7 +1,6 @@
 package com.envify.back.entity;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.envify.back.dto.UserOwnPackageDto;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,7 +15,7 @@ public class ConfigEntity {
 	private String description;
 	private int operatingSystemId;
 	private String operatingSystemName;
-	private List<PackageEntity> packages;
+	private List<UserOwnPackageDto> packages;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,18 +73,12 @@ public class ConfigEntity {
 		this.operatingSystemName = operatingSystemName;
 	}
 
-	@Query("""
-		SELECT p.name, pv.versionNumber
-		FROM PackageEntity p
-		LEFT JOIN PackageVersionEntity pv ON p.id = pv.packageId
-		LEFT JOIN ConfigPackageIdEntity cpi ON pv.id = cpi.packageVersionId
-		WHERE cpi.configId = :configId
-	""")
-	public List<PackageEntity> getPackages(@Param("configId") int configId) {
+	@Transient
+	public List<UserOwnPackageDto> getPackages() {
 		return packages;
 	}
 
-	public void setPackages(List<PackageEntity> packages) {
+	public void setPackages(List<UserOwnPackageDto> packages) {
 		this.packages = packages;
 	}
 
@@ -98,8 +91,7 @@ public class ConfigEntity {
 				&& userId == that.userId
 				&& operatingSystemId == that.operatingSystemId
 				&& Objects.equals(name, that.name)
-				&& Objects.equals(description, that.description)
-				&& Objects.equals(packages, that.packages);
+				&& Objects.equals(description, that.description);
 	}
 
 	@Override
