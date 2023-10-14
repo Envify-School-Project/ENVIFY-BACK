@@ -15,7 +15,7 @@ public class ConfigEntity {
 	private String description;
 	private int operatingSystemId;
 	private String operatingSystemName;
-	private List<String> packages;
+	private List<UserOwnPackageDto> packages;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,11 +74,11 @@ public class ConfigEntity {
 	}
 
 	@Transient
-	public List<String> getPackages() {
+	public List<UserOwnPackageDto> getPackages() {
 		return packages;
 	}
 
-	public void setPackages(List<String> packages) {
+	public void setPackages(List<UserOwnPackageDto> packages) {
 		this.packages = packages;
 	}
 
