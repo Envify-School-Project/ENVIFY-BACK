@@ -1,5 +1,6 @@
 package com.envify.back.entity;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -24,6 +25,8 @@ public class UserEntity {
 	private String role;
 	@JsonIgnore
 	private String password;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,21 +102,34 @@ public class UserEntity {
 		this.password = password;
 	}
 
+	@Column(name = "created_at")
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	@Column(name = "updated_at")
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 		UserEntity that = (UserEntity) o;
-		return id == that.id && Objects.equals(username, that.username) && Objects.equals(lastname, that.lastname)
-				&& Objects.equals(firstname, that.firstname) && Objects.equals(email, that.email)
-				&& Objects.equals(company, that.company) && Objects.equals(role, that.role)
-				&& Objects.equals(password, that.password);
+		return id == that.id && Objects.equals(username, that.username) && Objects.equals(lastname, that.lastname) && Objects.equals(firstname, that.firstname) && Objects.equals(email, that.email) && Objects.equals(company, that.company) && Objects.equals(role, that.role) && Objects.equals(password, that.password) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, username, lastname, firstname, email, company, password);
+		return Objects.hash(id, username, lastname, firstname, email, company, role, password, createdAt, updatedAt);
 	}
 }

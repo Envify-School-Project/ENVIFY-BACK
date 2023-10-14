@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +18,8 @@ public class ConfigEntity {
 	private int operatingSystemId;
 	private String operatingSystemName;
 	private List<PackageEntity> packages;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,6 +77,24 @@ public class ConfigEntity {
 		this.operatingSystemName = operatingSystemName;
 	}
 
+	@Column(name = "created_at")
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	@Column(name = "updated_at")
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 	@Query("""
 		SELECT p.name, pv.versionNumber
 		FROM PackageEntity p
@@ -94,16 +115,11 @@ public class ConfigEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ConfigEntity that = (ConfigEntity) o;
-		return id == that.id
-				&& userId == that.userId
-				&& operatingSystemId == that.operatingSystemId
-				&& Objects.equals(name, that.name)
-				&& Objects.equals(description, that.description)
-				&& Objects.equals(packages, that.packages);
+		return id == that.id && userId == that.userId && operatingSystemId == that.operatingSystemId && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(operatingSystemName, that.operatingSystemName) && Objects.equals(packages, that.packages) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, userId, name, description, operatingSystemId);
+		return Objects.hash(id, userId, name, description, operatingSystemId, operatingSystemName, packages, createdAt, updatedAt);
 	}
 }
