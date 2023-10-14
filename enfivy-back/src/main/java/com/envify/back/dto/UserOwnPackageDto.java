@@ -6,6 +6,11 @@ public class UserOwnPackageDto {
     private String name;
     private String versionNumber;
 
+    public UserOwnPackageDto(String name, String versionNumber) {
+        this.name = name;
+        this.versionNumber = versionNumber;
+    }
+
     public String getName() {
         return name;
     }

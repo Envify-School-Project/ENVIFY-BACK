@@ -5,11 +5,11 @@ import com.envify.back.dto.UserOwnPackageDto;
 import com.envify.back.entity.*;
 import com.envify.back.service.ConfigService;
 import com.envify.back.service.OperatingSystemService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,12 +20,6 @@ public class ConfigServiceImpl implements ConfigService {
     private ConfigDao configDao;
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private ConfigPackageDao configPackageDao;
-    @Autowired
-    private PackageVersionDao packageVersionDao;
-    @Autowired
-    private PackageDao packageDao;
     @Autowired
     private OperatingSystemService operatingSystemService;
 
@@ -68,20 +62,11 @@ public class ConfigServiceImpl implements ConfigService {
         List<ConfigEntity> configs = configDao.findConfigsByUserId(userId);
 
         for (ConfigEntity config : configs) {
-            List<ConfigPackageEntity> configPackages = configPackageDao.findAllByConfigId(config.getId());
-            List<Integer> packagesVersionsIds = configPackages.stream().map(ConfigPackageEntity::getConfigPackageId).map(ConfigPackageIdEntity::getPackageVersionId).toList();
-            List<PackageVersionEntity> packagesVersions = packageVersionDao.findAllByIdIn(packagesVersionsIds);
-            List<Integer> packagesIds = packagesVersions.stream().map(PackageVersionEntity::getPackageId).toList();
-            List<PackageEntity> packageEntities = packageDao.findAllByIdIn(packagesIds);
-            List<UserOwnPackageDto> packages = new ArrayList<>();
-
-            for (ConfigPackageEntity configPackage : configPackages) {
-                UserOwnPackageDto userOwnPackageDto = new UserOwnPackageDto();
-                userOwnPackageDto.setName(packageEntities.stream().filter(p -> p.getId() == configPackage.getConfigPackageId().getPackageVersionId()).findFirst().get().getName());
-                userOwnPackageDto.setVersionNumber(packagesVersions.stream().filter(p -> p.getId() == configPackage.getConfigPackageId().getPackageVersionId()).findFirst().get().getVersionNumber());
-                packages.add(userOwnPackageDto);
+            List<String> packages = configDao.findUserOwnPackagesByConfigId(config.getId());
+            if (!packages.isEmpty()) {
+                System.out.println("......... " + packages.get(0));
             }
-
+            //UserOwnPackageDto userOwnPackageDto = new UserOwnPackageDto(packages.get(0), packages.get(1));
             config.setPackages(packages);
         }
 
