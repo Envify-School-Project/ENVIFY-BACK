@@ -85,7 +85,6 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 												 String filePath, String release) throws IOException {
 
 		Resource resource = new ClassPathResource("classpath:" + filePath);
-
 		InputStream inputStream = resource.getInputStream();
 
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
