@@ -23,9 +23,7 @@ public class ConfigPackageFileServiceImpl implements ConfigPackageFileService {
 
     @Override
     public List<ConfigPackageFileEntity> findAllConfigPackageFilesByPackageVersionIds(List<Integer> packageVersionIds) {
-        Iterable<Long> ids = packageVersionIds.stream().map(Integer::longValue).toList();
-
-        return configPackageFileDao.findAllById(ids);
+        return configPackageFileDao.getByPackageVersionIdIn(packageVersionIds);
     }
 
     @Override

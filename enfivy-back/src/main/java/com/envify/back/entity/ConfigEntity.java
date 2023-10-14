@@ -15,6 +15,7 @@ public class ConfigEntity {
 	private String name; 
 	private String description;
 	private int operatingSystemId;
+	private String operatingSystemName;
 	private List<PackageEntity> packages;
 
 	@Id
@@ -62,6 +63,15 @@ public class ConfigEntity {
 
 	public void setOperatingSystemId(int operatingSystemId) {
 		this.operatingSystemId = operatingSystemId;
+	}
+
+	@Transient
+	public String getOperatingSystemName() {
+		return operatingSystemName;
+	}
+
+	public void setOperatingSystemName(String operatingSystemName) {
+		this.operatingSystemName = operatingSystemName;
 	}
 
 	@Query("""
