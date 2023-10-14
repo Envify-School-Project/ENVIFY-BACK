@@ -47,7 +47,7 @@ public class ConfigFileParser {
         boolean found = false;
 
         for (ReceivedPackagePropertiesDto property : properties) {
-            String patternToReplace = "$" + property.getField();
+            String patternToReplace = "$" + property.getField().toLowerCase();
             String replacementPattern = property.getValue();
 
             Pattern pattern = Pattern.compile("\\"+patternToReplace);
