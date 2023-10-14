@@ -14,7 +14,7 @@ public interface ConfigDao extends JpaRepository<ConfigEntity, Long> {
     void deleteById(int id);
     List<ConfigEntity> findConfigsByUserId(int userId);
     @Query("""
-        SELECT p.name, pv.versionNumber
+        SELECT p.name, pv.versionNumber, pv.id
         FROM PackageEntity p
         LEFT JOIN PackageVersionEntity pv ON p.id = pv.packageId
         LEFT JOIN ConfigPackageEntity cp ON pv.id = cp.configPackageId.packageVersionId
