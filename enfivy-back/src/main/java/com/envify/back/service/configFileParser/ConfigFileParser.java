@@ -37,7 +37,7 @@ public class ConfigFileParser {
     }
 
     private String configFolderPath() {
-        return String.format(folderPath, packageName);
+        return String.format(folderPath, packageName.toLowerCase());
     }
 
 
@@ -47,7 +47,7 @@ public class ConfigFileParser {
         boolean found = false;
 
         for (ReceivedPackagePropertiesDto property : properties) {
-            String patternToReplace = "$" + property.getField().toLowerCase();
+            String patternToReplace = "$" + property.getField();
             String replacementPattern = property.getValue();
 
             Pattern pattern = Pattern.compile("\\"+patternToReplace);
