@@ -40,8 +40,8 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 
 	public String readFileAsString(String filePath) throws IOException {
 
-		// IN LOCAL ENV YOU NEED TO COMMENT LINE 45 to 47 AN LINE 53
-		// 						   	UNCOMMENT LINE 49 TO 52
+		// IN LOCAL ENV YOU NEED TO COMMENT LINE 46 to 48, LINE 53
+		// 						   	UNCOMMENT LINE 50 TO 52
 
 		Resource resource = new ClassPathResource("classpath:" + filePath);
 		InputStream inputStream = resource.getInputStream();
@@ -61,14 +61,15 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		fileName.append(config);
 		fileName.append(SCRIPT_SH);
 
-		// IN LOCAL ENV YOU NEED TO COMMENT LINE 63 to 67 AND UNCOMMENT LINE 68
+		// IN LOCAL ENV YOU NEED UNCOMMENT LINE 67 TO 71
+		// COMMENT LINE 72
 
-		StringBuilder path = new StringBuilder("classpath:");
-		path.append(fileName);
-		Resource resource = resourceLoader.getResource(path.toString());
+		// StringBuilder path = new StringBuilder("classpath:");
+		// path.append(fileName);
+		// Resource resource = resourceLoader.getResource(path.toString());
 
-		return resource.getFile().getAbsolutePath();
-//		return fileName.toString();
+		// return resource.getFile().getAbsolutePath();
+		return fileName.toString();
 	}
 
 	public String buildFileFooterString(ScriptRequestBodyDto scriptRequestBody) throws IOException {
@@ -89,11 +90,16 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 	public void getScriptCommandAndLabelFromFile(final List<String> scriptLabels, final List<String> scriptCommand,
 												 String filePath, String release) throws IOException {
 
+		// IN LOCAL ENV YOU NEED COMMENT LINE 96 TO 99
+		// UNCOMMENT LINE 101
+
 		Resource resource = new ClassPathResource("classpath:" + filePath);
 
-		try(InputStream inputStream = resource.getInputStream()) {
+		try(InputStream inputStream = resource.getInputStream();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		// try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+
 			String line = reader.readLine();
 			while (line != null) {
 				if (line.contains(ECHO)) {
