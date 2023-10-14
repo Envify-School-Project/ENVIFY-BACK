@@ -10,5 +10,6 @@ import java.util.List;
 public interface PackageVersionDao extends JpaRepository<PackageVersionEntity, Long> {
     PackageVersionEntity getById(int id);
     List<PackageVersionEntity> findPackageVersionEntitiesByPackageId(int packageId);
+    List<PackageVersionEntity> findAllByIdIn(List<Integer> ids);
     void deleteById(int id);
 }
