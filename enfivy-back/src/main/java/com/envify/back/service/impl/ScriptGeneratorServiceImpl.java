@@ -40,6 +40,9 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 
 	public String readFileAsString(String filePath) throws IOException {
 
+		// IN LOCAL ENV YOU NEED TO COMMENT LINE 45 to 47 AN LINE 53
+		// 						   	UNCOMMENT LINE 49 TO 52
+
 		Resource resource = new ClassPathResource("classpath:" + filePath);
 		InputStream inputStream = resource.getInputStream();
 		byte[] bdata = FileCopyUtils.copyToByteArray(inputStream);
@@ -57,13 +60,15 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 		fileName.append("_");
 		fileName.append(config);
 		fileName.append(SCRIPT_SH);
-//
-//		StringBuilder path = new StringBuilder("classpath:");
-//		path.append(fileName);
-//		Resource resource = resourceLoader.getResource(path.toString());
-//
-//		return resource.getFile().getAbsolutePath();
-		return fileName.toString();
+
+		// IN LOCAL ENV YOU NEED TO COMMENT LINE 63 to 67 AND UNCOMMENT LINE 68
+
+		StringBuilder path = new StringBuilder("classpath:");
+		path.append(fileName);
+		Resource resource = resourceLoader.getResource(path.toString());
+
+		return resource.getFile().getAbsolutePath();
+//		return fileName.toString();
 	}
 
 	public String buildFileFooterString(ScriptRequestBodyDto scriptRequestBody) throws IOException {
@@ -85,9 +90,10 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
 												 String filePath, String release) throws IOException {
 
 		Resource resource = new ClassPathResource("classpath:" + filePath);
-		InputStream inputStream = resource.getInputStream();
 
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+		try(InputStream inputStream = resource.getInputStream()) {
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = reader.readLine();
 			while (line != null) {
 				if (line.contains(ECHO)) {
