@@ -10,7 +10,4 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ConfigPackageDao extends JpaRepository<ConfigPackageEntity, Long> {
-    @Query("SELECT c FROM ConfigPackageEntity c WHERE c.configPackageId.configId = :configId")
-    List<ConfigPackageEntity> findAllByConfigId(@Param("configId") Integer configId);
-}
+public interface ConfigPackageDao extends JpaRepository<ConfigPackageEntity, Long> {}
