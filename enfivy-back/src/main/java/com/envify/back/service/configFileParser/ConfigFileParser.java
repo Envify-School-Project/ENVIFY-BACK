@@ -4,6 +4,7 @@ import com.envify.back.dto.ReceivedPackageDto;
 import com.envify.back.dto.ReceivedPackagePropertiesDto;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 
 public class ConfigFileParser {
     private static final String folderPath = "./src/main/resources/fileConfigTemplate/%s/";
+    private static final String nginxServerConfigFilePath = "./src/main/resources/fileConfigTemplate/nginx_server/nginx.server.txt";
     private String packageName;
     private ReceivedPackageDto receivedPackageDto;
 
@@ -40,12 +42,43 @@ public class ConfigFileParser {
         return String.format(folderPath, packageName.toLowerCase());
     }
 
-    private String findPatternAndReplace(String line) {
+    private String findPatternAndReplace(String line) throws FileNotFoundException {
         List<ReceivedPackagePropertiesDto> properties = receivedPackageDto.getPackageProperties();
         StringBuilder newLine = new StringBuilder();
         boolean found = false;
 
         for (ReceivedPackagePropertiesDto property : properties) {
+
+            if (receivedPackageDto.getName() == "Nginx" && property.getValues() != null) {
+
+                StringBuilder newServerFile = new StringBuilder();
+                File serverFile = new File(nginxServerConfigFilePath);
+                Scanner serverScanner = new Scanner(serverFile);
+
+                while (serverScanner.hasNextLine()) {
+
+                    String newServerLine = serverScanner.nextLine();
+
+                    for (ReceivedPackagePropertiesDto serverPropertiesDto : property.getValues()) {
+
+                        String patternToReplace = "$" + property.getField();
+                        String replacementPattern = property.getValue();
+
+                        Pattern pattern = Pattern.compile("\\"+patternToReplace);
+                        Matcher matcher = pattern.matcher(line);
+                        boolean matchFound = matcher.find();
+
+                        if (matchFound) {
+                            newServerFile.append(newServerLine.replace(patternToReplace, replacementPattern)).append("\n");
+                        }
+                    }
+                }
+                serverScanner.close();
+
+                System.out.println(newServerFile);
+
+            }
+
             String patternToReplace = "$" + property.getField();
             String replacementPattern = property.getValue();
 

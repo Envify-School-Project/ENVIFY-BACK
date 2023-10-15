@@ -52,17 +52,11 @@ public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGener
             configPackageEntity.setConfigPackageId(new ConfigPackageIdEntity(configEntity.getId(), receivedPackageDto.getVersionId()));
 
             if (receivedPackageDto.getPackageProperties().size() != 0) {
+                ConfigFileParser configFileParser = new ConfigFileParser(receivedPackageDto.getName(), receivedPackageDto);
+                configPackageEntity.setConfigurationScripts(configFileParser.parseFile());
 
-                if (receivedPackageDto.getName() == "Nginx" && Objects.equals(receivedPackageDto.getPackageProperties().get(2).getType(), "multiple")) {
-
-                } else {
-                    ConfigFileParser configFileParser = new ConfigFileParser(receivedPackageDto.getName(), receivedPackageDto);
-                    configPackageEntity.setConfigurationScripts(configFileParser.parseFile());
-
-                    CompletedConfigFileDto completedConfigFileDto = generateFinalResponseConfigFileDto(configFileParser);
-                    configFiles.add(completedConfigFileDto);
-                }
-
+                CompletedConfigFileDto completedConfigFileDto = generateFinalResponseConfigFileDto(configFileParser);
+                configFiles.add(completedConfigFileDto);
             }
 
             try {
@@ -76,7 +70,7 @@ public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGener
 
         List<ScriptDto> scripts = new ArrayList<>();
 
-        scripts = scriptGeneratorService.buildScripts(scriptRequestBody);
+//        scripts = scriptGeneratorService.buildScripts(scriptRequestBody);
 
         CompletedConfigDto completedConfigDto = new CompletedConfigDto(scripts, configFiles);
 
