@@ -1,6 +1,7 @@
 package com.envify.back.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -8,7 +9,6 @@ import java.util.Objects;
 public class OperatingSystemEntity {
     private int id;
     private String name;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

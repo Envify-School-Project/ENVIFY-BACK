@@ -1,6 +1,7 @@
 package com.envify.back.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +12,9 @@ public class ConfigPackageEntity {
 
 	@EmbeddedId
     private ConfigPackageIdEntity configPackageId;
+
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 
 	public ConfigPackageIdEntity getConfigPackageId() {
 		return configPackageId;
@@ -29,21 +33,34 @@ public class ConfigPackageEntity {
         this.configurationScripts = configurationScripts;
     }
 
-    @Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ConfigPackageEntity other = (ConfigPackageEntity) obj;
-		return Objects.equals(configPackageId, other.configPackageId)
-				&& Objects.equals(configurationScripts, other.configurationScripts);
+	@Column(name = "created_at")
+	public Timestamp getCreatedAt() {
+		return createdAt;
 	}
 
-    @Override
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	@Column(name = "updated_at")
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ConfigPackageEntity that = (ConfigPackageEntity) o;
+		return Objects.equals(configurationScripts, that.configurationScripts) && Objects.equals(configPackageId, that.configPackageId) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+	}
+
+	@Override
 	public int hashCode() {
-		return Objects.hash(configPackageId, configurationScripts);
+		return Objects.hash(configurationScripts, configPackageId, createdAt, updatedAt);
 	}
 }
