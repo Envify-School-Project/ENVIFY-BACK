@@ -86,7 +86,7 @@ public class UserEntity {
 		this.company = company;
 	}
 
-	@Column(name = "role", nullable = false)
+	@Column(name = "role", nullable = true)
 	public String getRole() {
 		return role;
 	}
