@@ -1,7 +1,6 @@
 package com.envify.back.entity;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.envify.back.dto.UserOwnPackageDto;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -17,9 +16,9 @@ public class ConfigEntity {
 	private String description;
 	private int operatingSystemId;
 	private String operatingSystemName;
-	private List<PackageEntity> packages;
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
+	private List<UserOwnPackageDto> packages;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,18 +94,13 @@ public class ConfigEntity {
 		this.updatedAt = updatedAt;
 	}
 
-	@Query("""
-		SELECT p.name, pv.versionNumber
-		FROM PackageEntity p
-		LEFT JOIN PackageVersionEntity pv ON p.id = pv.packageId
-		LEFT JOIN ConfigPackageIdEntity cpi ON pv.id = cpi.packageVersionId
-		WHERE cpi.configId = :configId
-	""")
-	public List<PackageEntity> getPackages(@Param("configId") int configId) {
+
+	@Transient
+	public List<UserOwnPackageDto> getPackages() {
 		return packages;
 	}
 
-	public void setPackages(List<PackageEntity> packages) {
+	public void setPackages(List<UserOwnPackageDto> packages) {
 		this.packages = packages;
 	}
 
@@ -115,11 +109,11 @@ public class ConfigEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ConfigEntity that = (ConfigEntity) o;
-		return id == that.id && userId == that.userId && operatingSystemId == that.operatingSystemId && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(operatingSystemName, that.operatingSystemName) && Objects.equals(packages, that.packages) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+		return id == that.id && userId == that.userId && operatingSystemId == that.operatingSystemId && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, userId, name, description, operatingSystemId, operatingSystemName, packages, createdAt, updatedAt);
+		return Objects.hash(id, userId, name, description, operatingSystemId, createdAt, updatedAt);
 	}
 }

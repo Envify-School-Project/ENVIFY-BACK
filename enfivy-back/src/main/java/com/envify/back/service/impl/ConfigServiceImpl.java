@@ -1,16 +1,15 @@
 package com.envify.back.service.impl;
 
-import com.envify.back.dao.ConfigDao;
-import com.envify.back.dao.UserDao;
-import com.envify.back.entity.ConfigEntity;
-import com.envify.back.entity.OperatingSystemEntity;
-import com.envify.back.entity.UserEntity;
+import com.envify.back.dao.*;
+import com.envify.back.dto.UserOwnPackageDto;
+import com.envify.back.entity.*;
 import com.envify.back.service.ConfigService;
 import com.envify.back.service.OperatingSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,9 +23,34 @@ public class ConfigServiceImpl implements ConfigService {
     @Autowired
     private OperatingSystemService operatingSystemService;
 
+    private void setOperatingSystemName(ConfigEntity config) {
+        OperatingSystemEntity os = operatingSystemService.findOperatingSystemById(config.getOperatingSystemId());
+        config.setOperatingSystemName(os.getName());
+    }
+
+    private List<ConfigEntity> fetchConfigsPackages(List<ConfigEntity> configs) {
+        for (ConfigEntity config : configs) {
+            List<String> packages = configDao.findUserOwnPackagesByConfigId(config.getId());
+            if (!packages.isEmpty()) {
+                List<UserOwnPackageDto> userOwnPackages = packages.stream().map(p -> {
+                    String[] packageInfo = p.split(",");
+                    return new UserOwnPackageDto(packageInfo[0], packageInfo[1], Integer.parseInt(packageInfo[2]));
+                }).toList();
+
+                config.setPackages(userOwnPackages);
+            } else {
+                config.setPackages(new ArrayList<>());
+            }
+        }
+
+        return configs;
+    }
+
     @Override
     public List<ConfigEntity> findAllConfigs() {
-        return configDao.findAll();
+        List<ConfigEntity> configs = configDao.findAll();
+
+        return fetchConfigsPackages(configs).stream().peek(this::setOperatingSystemName).toList();
     }
 
     @Override
@@ -49,16 +73,11 @@ public class ConfigServiceImpl implements ConfigService {
         configDao.deleteById(id); 
     }
 
-    private void setOperatingSystemName(ConfigEntity config) {
-        OperatingSystemEntity os = operatingSystemService.findOperatingSystemById(config.getOperatingSystemId());
-        config.setOperatingSystemName(os.getName());
-    }
-
     @Override
     public List<ConfigEntity> findConfigsByUserId(int userId) {
         List<ConfigEntity> configs = configDao.findConfigsByUserId(userId);
 
-        return configs.stream().peek(this::setOperatingSystemName).toList();
+        return fetchConfigsPackages(configs).stream().peek(this::setOperatingSystemName).toList();
     }
 
     @Override
@@ -66,6 +85,6 @@ public class ConfigServiceImpl implements ConfigService {
         UserEntity user = userDao.findByRole(userRole);
         List<ConfigEntity> configs = configDao.findConfigsByUserId(user.getId());
 
-        return configs.stream().peek(this::setOperatingSystemName).toList();
+        return fetchConfigsPackages(configs).stream().peek(this::setOperatingSystemName).toList();
     }
 }
