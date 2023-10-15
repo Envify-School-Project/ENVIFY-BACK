@@ -9,9 +9,6 @@ import java.util.Objects;
 public class OperatingSystemEntity {
     private int id;
     private String name;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,34 +25,16 @@ public class OperatingSystemEntity {
         this.name = name;
     }
 
-    @Column(name = "created_at")
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Column(name = "updated_at")
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OperatingSystemEntity that = (OperatingSystemEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+        return id == that.id && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, createdAt, updatedAt);
+        return Objects.hash(id, name);
     }
 }
