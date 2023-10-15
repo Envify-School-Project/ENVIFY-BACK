@@ -70,7 +70,7 @@ public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGener
 
         List<ScriptDto> scripts = new ArrayList<>();
 
-//        scripts = scriptGeneratorService.buildScripts(scriptRequestBody);
+        scripts = scriptGeneratorService.buildScripts(scriptRequestBody);
 
         CompletedConfigDto completedConfigDto = new CompletedConfigDto(scripts, configFiles);
 
