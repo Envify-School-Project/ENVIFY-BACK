@@ -49,38 +49,41 @@ public class ConfigFileParser {
 
         for (ReceivedPackagePropertiesDto property : properties) {
 
-            if (receivedPackageDto.getName() == "Nginx" && property.getValues() != null) {
+            StringBuilder newServerFile = new StringBuilder();
 
-                StringBuilder newServerFile = new StringBuilder();
+            String patternToReplace = "$" + property.getField();
+
+            String replacementPattern = "";
+
+            if (receivedPackageDto.getName().equalsIgnoreCase("nginx") && property.getValue() == null) {
                 File serverFile = new File(nginxServerConfigFilePath);
                 Scanner serverScanner = new Scanner(serverFile);
 
+                newServerFile.append("server {\n");
+
                 while (serverScanner.hasNextLine()) {
-
                     String newServerLine = serverScanner.nextLine();
-
                     for (ReceivedPackagePropertiesDto serverPropertiesDto : property.getValues()) {
 
-                        String patternToReplace = "$" + property.getField();
-                        String replacementPattern = property.getValue();
+                        String serverPatternToReplace = "$" + serverPropertiesDto.getField();
+                        String serverReplacementPattern = serverPropertiesDto.getValue();
 
-                        Pattern pattern = Pattern.compile("\\"+patternToReplace);
-                        Matcher matcher = pattern.matcher(line);
+                        Pattern pattern = Pattern.compile("\\"+serverPatternToReplace);
+                        Matcher matcher = pattern.matcher(newServerLine);
                         boolean matchFound = matcher.find();
 
                         if (matchFound) {
-                            newServerFile.append(newServerLine.replace(patternToReplace, replacementPattern)).append("\n");
+                            newServerFile.append(newServerLine.replace(serverPatternToReplace, serverReplacementPattern)).append("\n");
                         }
                     }
                 }
                 serverScanner.close();
+                newServerFile.append("}\n");
+                replacementPattern = newServerFile.toString();
+            } else {
 
-                System.out.println(newServerFile);
-
+                replacementPattern = property.getValue();
             }
-
-            String patternToReplace = "$" + property.getField();
-            String replacementPattern = property.getValue();
 
             Pattern pattern = Pattern.compile("\\"+patternToReplace);
             Matcher matcher = pattern.matcher(line);
