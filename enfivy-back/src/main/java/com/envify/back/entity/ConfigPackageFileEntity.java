@@ -11,8 +11,6 @@ public class ConfigPackageFileEntity {
     private String description;
     private String properties;
     private int packageVersionId;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,34 +50,16 @@ public class ConfigPackageFileEntity {
         this.packageVersionId = packageVersionId;
     }
 
-    @Column(name = "created_at")
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Column(name = "updated_at")
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConfigPackageFileEntity that = (ConfigPackageFileEntity) o;
-        return packageVersionId == that.packageVersionId && Objects.equals(id, that.id) && Objects.equals(description, that.description) && Objects.equals(properties, that.properties) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+        return packageVersionId == that.packageVersionId && Objects.equals(id, that.id) && Objects.equals(description, that.description) && Objects.equals(properties, that.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, properties, packageVersionId, createdAt, updatedAt);
+        return Objects.hash(id, description, properties, packageVersionId);
     }
 }
