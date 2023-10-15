@@ -1,6 +1,7 @@
 package com.envify.back.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -9,6 +10,8 @@ public class OperatingSystemVersionEntity {
     private int id;
     private String versionNumber;
     private int operatingSystemId;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,24 +42,34 @@ public class OperatingSystemVersionEntity {
         this.operatingSystemId = operatingSystemId;
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, operatingSystemId, versionNumber);
-	}
+    @Column(name = "created_at")
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OperatingSystemVersionEntity other = (OperatingSystemVersionEntity) obj;
-		return id == other.id && operatingSystemId == other.operatingSystemId
-				&& Objects.equals(versionNumber, other.versionNumber);
-	}
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    
-    
+    @Column(name = "updated_at")
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OperatingSystemVersionEntity that = (OperatingSystemVersionEntity) o;
+        return id == that.id && operatingSystemId == that.operatingSystemId && Objects.equals(versionNumber, that.versionNumber) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, versionNumber, operatingSystemId, createdAt, updatedAt);
+    }
 }

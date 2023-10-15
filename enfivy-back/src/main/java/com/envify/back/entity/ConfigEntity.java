@@ -3,6 +3,7 @@ package com.envify.back.entity;
 import com.envify.back.dto.UserOwnPackageDto;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +16,8 @@ public class ConfigEntity {
 	private String description;
 	private int operatingSystemId;
 	private String operatingSystemName;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 	private List<UserOwnPackageDto> packages;
 
 	@Id
@@ -73,6 +76,25 @@ public class ConfigEntity {
 		this.operatingSystemName = operatingSystemName;
 	}
 
+	@Column(name = "created_at")
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	@Column(name = "updated_at")
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
 	@Transient
 	public List<UserOwnPackageDto> getPackages() {
 		return packages;
@@ -87,15 +109,11 @@ public class ConfigEntity {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ConfigEntity that = (ConfigEntity) o;
-		return id == that.id
-				&& userId == that.userId
-				&& operatingSystemId == that.operatingSystemId
-				&& Objects.equals(name, that.name)
-				&& Objects.equals(description, that.description);
+		return id == that.id && userId == that.userId && operatingSystemId == that.operatingSystemId && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, userId, name, description, operatingSystemId);
+		return Objects.hash(id, userId, name, description, operatingSystemId, createdAt, updatedAt);
 	}
 }

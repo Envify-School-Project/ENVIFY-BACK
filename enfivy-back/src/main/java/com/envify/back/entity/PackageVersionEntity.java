@@ -1,6 +1,7 @@
 package com.envify.back.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +12,8 @@ public class PackageVersionEntity {
     private String url;
     private int versionStatusId;
     private int packageId;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,16 +62,34 @@ public class PackageVersionEntity {
         this.packageId = packageId;
     }
 
+    @Column(name = "created_at")
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Column(name = "updated_at")
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PackageVersionEntity that = (PackageVersionEntity) o;
-        return id == that.id && versionStatusId == that.versionStatusId && packageId == that.packageId && Objects.equals(versionNumber, that.versionNumber) && Objects.equals(url, that.url);
+        return id == that.id && versionStatusId == that.versionStatusId && packageId == that.packageId && Objects.equals(versionNumber, that.versionNumber) && Objects.equals(url, that.url) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, versionNumber, url, versionStatusId, packageId);
+        return Objects.hash(id, versionNumber, url, versionStatusId, packageId, createdAt, updatedAt);
     }
 }

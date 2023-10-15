@@ -1,6 +1,7 @@
 package com.envify.back.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,6 +11,8 @@ public class PackageEntity {
     private int id;
     private String name;
     private List<PackageVersionEntity> versions;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,16 +43,34 @@ public class PackageEntity {
         this.versions = versions;
     }
 
+    @Column(name = "created_at")
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Column(name = "updated_at")
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PackageEntity that = (PackageEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(versions, that.versions);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, versions);
+        return Objects.hash(id, name, createdAt, updatedAt);
     }
 }
