@@ -1,11 +1,12 @@
         server {
-	        listen $listen
-          server_name $server_name
-          access_log $access_log
-          root $root
+            listen $listen;
+            server_name $server_name;
+            access_log $access_log
+            root $root
 
-          location $location_path {
-            root $location_root
-            index $location_index
-          }
+            location $location_path {
+              root $location_root;
+
+              index $location_index;
+            }
         }
