@@ -40,7 +40,6 @@ public class ConfigFileParser {
         return String.format(folderPath, packageName.toLowerCase());
     }
 
-
     private String findPatternAndReplace(String line) {
         List<ReceivedPackagePropertiesDto> properties = receivedPackageDto.getPackageProperties();
         StringBuilder newLine = new StringBuilder();

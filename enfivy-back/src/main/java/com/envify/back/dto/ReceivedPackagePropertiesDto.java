@@ -1,5 +1,6 @@
 package com.envify.back.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ReceivedPackagePropertiesDto {
@@ -7,8 +8,8 @@ public class ReceivedPackagePropertiesDto {
     private String field;
     private String type;
     private String label;
-    private String defaultValue;
     private String value;
+    private List<ReceivedPackagePropertiesDto> values;
 
     public String getCategory() {
         return category;
@@ -42,14 +43,6 @@ public class ReceivedPackagePropertiesDto {
         this.type = type;
     }
 
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
     public String getValue() {
         return value;
     }
@@ -58,16 +51,24 @@ public class ReceivedPackagePropertiesDto {
         this.value = value;
     }
 
+    public List<ReceivedPackagePropertiesDto> getValues() {
+        return values;
+    }
+
+    public void setValues(List<ReceivedPackagePropertiesDto> values) {
+        this.values = values;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReceivedPackagePropertiesDto that = (ReceivedPackagePropertiesDto) o;
-        return Objects.equals(category, that.category) && Objects.equals(field, that.field) && Objects.equals(type, that.type) && Objects.equals(label, that.label) && Objects.equals(defaultValue, that.defaultValue) && Objects.equals(value, that.value);
+        return Objects.equals(category, that.category) && Objects.equals(field, that.field) && Objects.equals(type, that.type) && Objects.equals(label, that.label) && Objects.equals(value, that.value) && Objects.equals(values, that.values);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(category, field, type, label, defaultValue, value);
+        return Objects.hash(category, field, type, label, value, values);
     }
 }

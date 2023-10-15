@@ -1,11 +1,6 @@
 package com.envify.back.service.impl;
 
-import com.envify.back.dto.ScriptDto;
-import com.envify.back.dto.ScriptRequestBodyDto;
-import com.envify.back.dto.ReceivedConfigObjectDto;
-import com.envify.back.dto.CompletedConfigFileDto;
-import com.envify.back.dto.CompletedConfigDto;
-import com.envify.back.dto.ReceivedPackageDto;
+import com.envify.back.dto.*;
 import com.envify.back.entity.ConfigEntity;
 import com.envify.back.entity.ConfigPackageEntity;
 import com.envify.back.entity.ConfigPackageIdEntity;
@@ -24,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGeneratorService {
@@ -43,8 +39,10 @@ public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGener
     public CompletedConfigDto generateCompletedConfig(ReceivedConfigObjectDto receivedConfigObjectDto, HttpServletRequest request) throws EnvifyException, IOException {
         ConfigEntity configEntity = generateNewConfig(receivedConfigObjectDto, request);
 
+
         List<ScriptRequestBodyDto> scriptRequestBody = new ArrayList<>();
         List<CompletedConfigFileDto> configFiles = new ArrayList<>();
+
 
         for (ReceivedPackageDto receivedPackageDto : receivedConfigObjectDto.getPackages()) {
             ConfigPackageEntity configPackageEntity = new ConfigPackageEntity();
@@ -54,11 +52,17 @@ public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGener
             configPackageEntity.setConfigPackageId(new ConfigPackageIdEntity(configEntity.getId(), receivedPackageDto.getVersionId()));
 
             if (receivedPackageDto.getPackageProperties().size() != 0) {
-                ConfigFileParser configFileParser = new ConfigFileParser(receivedPackageDto.getName(), receivedPackageDto);
-                configPackageEntity.setConfigurationScripts(configFileParser.parseFile());
 
-                CompletedConfigFileDto completedConfigFileDto = generateFinalResponseConfigFileDto(configFileParser);
-                configFiles.add(completedConfigFileDto);
+                if (receivedPackageDto.getName() == "Nginx" && Objects.equals(receivedPackageDto.getPackageProperties().get(2).getType(), "multiple")) {
+
+                } else {
+                    ConfigFileParser configFileParser = new ConfigFileParser(receivedPackageDto.getName(), receivedPackageDto);
+                    configPackageEntity.setConfigurationScripts(configFileParser.parseFile());
+
+                    CompletedConfigFileDto completedConfigFileDto = generateFinalResponseConfigFileDto(configFileParser);
+                    configFiles.add(completedConfigFileDto);
+                }
+
             }
 
             try {
