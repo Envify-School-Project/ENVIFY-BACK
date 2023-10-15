@@ -91,7 +91,6 @@ public class CompletedConfigGeneratorServiceImpl implements CompletedConfigGener
 
         try {
             configService.saveConfig(configEntity);
-            System.out.println("Config correctly saved id is : " + configEntity.getId());
         } catch (Exception e) {
             LOGGER.error(e.toString());
         }
