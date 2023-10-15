@@ -68,7 +68,7 @@ public class ConfigFileParser {
                         String serverPatternToReplace = "$" + serverPropertiesDto.getField();
                         String serverReplacementPattern = serverPropertiesDto.getValue();
 
-                        Pattern pattern = Pattern.compile("\\"+serverPatternToReplace);
+                        Pattern pattern = Pattern.compile("\\"+serverPatternToReplace+"$");
                         Matcher matcher = pattern.matcher(newServerLine);
                         boolean matchFound = matcher.find();
 
