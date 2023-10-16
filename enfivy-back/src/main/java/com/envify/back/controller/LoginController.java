@@ -32,7 +32,7 @@ import com.envify.back.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://envify.netlify.app")
 public class LoginController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
