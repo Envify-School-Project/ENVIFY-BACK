@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.envify.back.config.Config;
 import com.envify.back.entity.UserEntity;
+import com.envify.back.exception.EnvifyException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -40,31 +42,37 @@ public class JWTUtil {
 
 	@PostConstruct
 	public void init() {
-		this.key = Keys.hmacShaKeyFor(config.getTokenSecretKey().getBytes());
+		key = Keys.hmacShaKeyFor(config.getTokenSecretKey().getBytes());
 	}
 
 	public Claims getAllClaimsFromToken(String token) {
 		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 	}
 
-	public String extractUsername(String token) {
+	public String extractUsername(String token) throws EnvifyException {
 		return extractClaim(token, Claims::getSubject);
 	}
 
-	public Date extractExpiration(String token) {
+	public Date extractExpiration(String token) throws EnvifyException {
 		return extractClaim(token, Claims::getExpiration);
 	}
 
-	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws EnvifyException {
 		final Claims claims = extractAllClaims(token);
 		return claimsResolver.apply(claims);
 	}
 
-	private Claims extractAllClaims(String token) {
-		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+	private Claims extractAllClaims(String token) throws EnvifyException {
+		Claims claims;
+		try {
+			claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+		} catch (Exception e) {
+			throw new EnvifyException("Echec de l'authentification avec le jwt");
+		}
+		return claims;
 	}
 
-	private Boolean isTokenExpired(String token) {
+	private Boolean isTokenExpired(String token) throws EnvifyException {
 		return extractExpiration(token).before(new Date());
 	}
 
@@ -116,12 +124,12 @@ public class JWTUtil {
 		return expirationTimeInMs;
 	}
 
-	public Boolean validateToken(String token, UserEntity userEntity) {
+	public Boolean validateToken(String token, UserEntity userEntity) throws EnvifyException {
 		final String username = extractUsername(token);
 		return (username.equals(userEntity.getEmail()) && !isTokenExpired(token));
 	}
 
-	public Boolean validateToken(String token) {
+	public Boolean validateToken(String token) throws EnvifyException {
 		return !isTokenExpired(token);
 	}
 
