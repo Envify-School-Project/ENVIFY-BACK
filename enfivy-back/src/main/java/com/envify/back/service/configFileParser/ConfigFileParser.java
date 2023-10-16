@@ -78,7 +78,7 @@ public class ConfigFileParser {
                     }
                 }
                 serverScanner.close();
-                newServerFile.append("            }\n        }\n");
+                newServerFile.append("        }\n    }\n");
                 replacementPattern = newServerFile.toString();
             } else {
 
